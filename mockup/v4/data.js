@@ -112,7 +112,7 @@ window.SCENES = [
       initials: ['נ.ג.', 'ל.'],
       sign: 'חתימת הרוכשים',
     },
-    widget: { type: 'countdown', label: 'ימים עד שהמפתח אצלנו', from: '2026-10-04', target: '2027-01-15T12:00:00', stamp: 'נחתם' }, // TBD: key date
+    widget: { type: 'countdown', label: 'ימים עד שהמפתח אצלנו', from: '2026-10-04', target: '2027-01-11T12:00:00', stamp: 'נחתם' }, // key day
   },
   {
     genre: 'catalog',
