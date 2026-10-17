@@ -9,6 +9,21 @@ window.Sound = (() => {
   let muted = false;
   try { muted = localStorage.getItem('linor-mute') === '1'; } catch (e) {}
   let lastTick = 0;
+  // iOS: Web Audio obeys the silent switch unless a media element is playing.
+  // A looping silent <audio> flips the audio session to playback.
+  const SILENT = 'data:audio/wav;base64,UklGRgQCAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YeABAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIA=';
+  let unlockEl = null;
+  function unlock() {
+    if (unlockEl) return;
+    try {
+      unlockEl = new Audio(SILENT);
+      unlockEl.loop = true;
+      unlockEl.setAttribute('playsinline', '');
+      unlockEl.play().catch(() => { unlockEl = null; });
+    } catch (e) {
+      unlockEl = null;
+    }
+  }
   let quiet = false; // the avatar is speaking: bed and shimmer are silent
   let chordTimer = null;
   let shimmerTimer = null;
@@ -150,12 +165,19 @@ window.Sound = (() => {
 
   const api = {
     get muted() { return muted; },
+    get running() { return !!ctx && ctx.state === 'running' && started; },
+    // Call from a real user activation (touchend, click, keydown). Safe to
+    // call many times: the bed starts only once the context actually runs.
     start() {
       if (!ensure()) return;
-      if (ctx.state === 'suspended') ctx.resume();
-      if (started) return;
-      started = true;
-      bed();
+      unlock();
+      const go = () => {
+        if (started || ctx.state !== 'running') return;
+        started = true;
+        bed();
+      };
+      if (ctx.state === 'running') go();
+      else ctx.resume().then(go).catch(() => {});
     },
     toggleMute() {
       muted = !muted;

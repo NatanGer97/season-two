@@ -832,8 +832,13 @@
     go.addEventListener('click', start, { once: true });
   }
 
-  // first tap: sound and tilt need a user gesture
-  addEventListener('pointerdown', () => Sound.start(), { once: true });
+  // Sound needs a real user activation (touchend / click / key), and on some
+  // phones the first one is not enough. Keep trying until the context runs.
+  const kick = () => {
+    Sound.start();
+    if (Sound.running) for (const ev of ['touchend', 'pointerup', 'click', 'keydown']) removeEventListener(ev, kick, true);
+  };
+  for (const ev of ['touchend', 'pointerup', 'click', 'keydown']) addEventListener(ev, kick, { capture: true, passive: true });
 
   async function start() {
     Sound.start();
