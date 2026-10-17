@@ -662,3 +662,5 @@ button {
   .cal-ring, .steps span, .ring-fig .band, .opt .bar, .card, .env-flap, .count-ring .fill { transition-duration: 1ms; }
   .cake .flame { animation: none; }
 }
+
+.real .photo-label, .real + .photo-label { display: none; }

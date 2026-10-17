@@ -76,6 +76,7 @@ window.SCENES = [
     dateLabel: 'יולי–אוגוסט 2026',
     title: 'הדרבי: בת ים נגד רמלה',
     photo: 'photos/3.jpg',
+    photo2: 'photos/3b.jpg',
     placeholder: { label: 'טיילת בת ים / רמלה', tones: ['#7FA3A8', '#3D4A3A'] },
     story: ['הים מול המחיר. העיר של נתן מול הבניין של לינור.', 'סיורים, טבלאות וויכוחים, עד שהגיעה הצעה שאי אפשר לסרב לה.'],
     art: { league: 'ליגת הדירות · מחזור 1', home: 'בת ים', away: 'רמלה', stadium: 'אצטדיון החיים' },
@@ -157,6 +158,7 @@ window.SCENES = [
   },
   {
     kind: 'roadmap',
+    photo: 'photos/roadmap.jpg',
     chapter: 'עונה 3',
     title: 'מפת הדרכים לעתיד',
     steps: [

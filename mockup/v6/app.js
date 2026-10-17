@@ -242,7 +242,9 @@
   const stepsOf = (s) => (s.widget ? 3 : 2);
 
   const ph = (s) =>
-    `<div class="ph"><div class="kb" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><img src="${s.photo}" alt="" onerror="this.remove()" /><span class="photo-label">placeholder · ${s.placeholder.label}</span></div></div>`;
+    `<div class="ph"><div class="kb" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><img src="${s.photo}" alt="" onload="this.parentNode.classList.add('real')" onerror="this.remove()" /><span class="photo-label">placeholder · ${s.placeholder.label}</span></div>${
+      s.photo2 ? `<div class="kb alt"><img src="${s.photo2}" alt="" onerror="this.remove()" /></div>` : ''
+    }</div>`;
 
   function sceneEl(s) {
     const el = document.createElement('article');
@@ -390,6 +392,12 @@
       confetti,
       sound: Sound,
       alive: Alive,
+      // crossfade to the second photo (the derby ends in Ramla)
+      swapPhoto() {
+        const alt = $('.kb.alt', el);
+        if (!alt) return;
+        alt.animate([{ opacity: 0, transform: 'scale(1.08)' }, { opacity: 1, transform: 'scale(1)' }], { duration: reduce ? 1 : 2200, easing: EASE_OUT, fill: 'both' });
+      },
     };
     const fn = window.Widgets[s.widget.type];
     cleanup = fn(w, s.widget, ctx) || null;
@@ -473,6 +481,7 @@
     el.className = `end ${s.kind}`;
     if (s.kind === 'roadmap') {
       el.innerHTML = `
+        ${s.photo ? `<div class="end-ph"><img src="${s.photo}" alt="" onerror="this.parentNode.remove()" /></div>` : ''}
         <p class="label" style="color:var(--gold)">${s.chapter}</p>
         <h2 class="title">${words(s.title)}</h2>
         <ol class="road">${s.steps.map((t, k) => `<li class="${k === 0 ? 'now' : ''}"><i class="still" style="--t:${t.tone}"></i><b>${t.label}</b><span class="label">${t.state}</span></li>`).join('')}</ol>

@@ -206,6 +206,7 @@ window.Widgets = (() => {
       setTimeout(() => {
         const fin = el.querySelector('.final');
         fin.hidden = false;
+        ctx.swapPhoto?.();
         if (!reduce) fin.animate([{ opacity: 0, transform: 'translateY(12px)' }, { opacity: 1, transform: 'none' }], { duration: 900, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
         ctx.sparkle(fin, 18);
         ctx.done(5000);
