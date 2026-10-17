@@ -16,7 +16,7 @@ everything moves, reacts and sounds. The photo is the screen.
 | Time under the finger | on touch screens, after a chapter closes, dragging up runs the calendar; release past 28% snaps to the next chapter. Auto-run after 6s or on wheel/keys. Force on desktop with `?scrub=1` | `app.js` `scrub()` |
 | Candles | blow into the mic (RMS > 0.11 for 4 frames) or tap. Flames glow and flicker | `widgets.js` |
 | Confetti | 140–160 pieces fall across the whole screen, 3–6s | `app.js` `confetti()` |
-| Wish lyrics | chapter 6 story step: the avatar video (`photos/6.mp4`, optional) plays and the wish scrolls line by line, active line lit; music ducks | `app.js` `lyrics()` |
+| Wish lyrics | chapter 6 story step: the avatar video `photos/6.mp4` plays with its voice and the wish scrolls line by line, each line at its `at` second (derived from `photos/6.srt`); music ducks. If the browser refuses sound, a one-tap button unmutes | `app.js` `lyrics()` |
 
 ## Beats
 

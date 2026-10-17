@@ -259,7 +259,7 @@
         <h2 class="title">${words(s.title)}</h2>
         <div class="part story">
           ${s.lyrics
-            ? `<div class="lyrics"><div class="lyrics-run">${s.lyrics.map((l) => (typeof l === 'string' ? `<p>${esc(l)}</p>` : `<p class="strong">${esc(l.text)}</p>`)).join('')}</div></div>`
+            ? `<div class="lyrics"><div class="lyrics-run">${s.lyrics.map((l) => (typeof l === 'string' ? `<p>${esc(l)}</p>` : `<p class="${l.strong ? 'strong' : ''}">${esc(l.text)}</p>`)).join('')}</div></div>`
             : s.story.map((p) => `<p>${words(p)}</p>`).join('')}
           ${s.hand && !s.lyrics ? `<p class="hand">${esc(s.hand)}</p>` : ''}
         </div>
@@ -424,14 +424,38 @@
     let timer = 0;
     (async () => {
       const v = await play();
+      // Autoplay with sound was refused: one tap turns the voice on
+      if (v && v.muted && !Sound.muted) {
+        const b = document.createElement('button');
+        b.className = 'btn unmute-vid';
+        b.type = 'button';
+        b.dataset.nogesture = '';
+        b.textContent = 'הפעילי את הקול';
+        box.before(b);
+        b.addEventListener('click', () => {
+          v.muted = false;
+          b.remove();
+        });
+        lines.__unmute = b;
+      }
       const fallback = lines.length * 2600;
       const total = v && isFinite(v.duration) && v.duration > 1 ? v.duration * 1000 : fallback;
       const t0 = performance.now();
       const per = total / lines.length;
+      const starts = s.lyrics.map((l, k) => (typeof l === 'object' && l.at != null ? l.at * 1000 : k * per));
       let cur = -1;
+      let done = false;
+      // Layout stays as it was while speaking; only the music comes back
+      const finish = () => {
+        if (done) return;
+        done = true;
+        Sound.duck(false);
+        showHint('גללי להמשך');
+      };
       const tick = (now) => {
         const t = v && !v.paused ? v.currentTime * 1000 : now - t0;
-        const i = Math.min(lines.length - 1, Math.floor(t / per));
+        let i = 0;
+        for (let k = 0; k < starts.length; k++) if (t >= starts[k]) i = k;
         if (i !== cur) {
           cur = i;
           lines.forEach((l, k) => l.classList.toggle('on', k === i));
@@ -440,12 +464,9 @@
           run.style.transform = `translateY(${-Math.max(0, y)}px)`;
           Sound.step();
         }
-        if (t < total + 1500) raf = requestAnimationFrame(tick);
-        else {
-          el.classList.remove('speaking');
-          Sound.duck(false);
-          showHint('גללי להמשך');
-        }
+        const over = v ? v.ended || (v.paused && t >= total - 50) : t >= total + 1500;
+        if (!over) raf = requestAnimationFrame(tick);
+        else finish();
       };
       raf = requestAnimationFrame(tick);
     })();
@@ -453,6 +474,7 @@
       cancelAnimationFrame(raf);
       clearTimeout(timer);
       el.classList.remove('speaking');
+      $('.unmute-vid', el)?.remove();
     };
   }
 
