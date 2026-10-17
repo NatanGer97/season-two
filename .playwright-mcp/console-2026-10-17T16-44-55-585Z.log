@@ -1,0 +1,37 @@
+[   25272ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/favicon.ico:0
+[   31609ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/0/main.jpg:0
+[   33691ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/0/main.jpg:0
+[   36359ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[   38451ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[   41039ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[   43149ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[   45738ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/3/main.jpg:0
+[   47829ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/3/main.jpg:0
+[   50409ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/4/main.jpg:0
+[   52546ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/4/main.jpg:0
+[   55651ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/5/main.jpg:0
+[   57742ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/5/main.jpg:0
+[   60318ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[   62408ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[  122793ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[  180216ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/0/main.jpg:0
+[  185446ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[  194880ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[  260370ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[  263123ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ http://localhost:5177/v4/widgets.js:137
+[  263657ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ http://localhost:5177/v4/widgets.js:137
+[  264164ms] [WARNING] Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently @ http://localhost:5177/v4/widgets.js:137
+[  268828ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/3/main.jpg:0
+[  280114ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/4/main.jpg:0
+[  292117ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/5/main.jpg:0
+[  300718ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[  319336ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[  324900ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[  326427ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[  377085ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[  379673ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/3/main.jpg:0
+[  382254ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/6/main.png:0
+[  384558ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[  390126ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/1/main.jpg:0
+[  393649ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/2/main.jpg:0
+[  395221ms] [ERROR] Failed to load resource: the server responded with a status of 404 (File not found) @ http://localhost:5177/v4/photos/5/main.jpg:0

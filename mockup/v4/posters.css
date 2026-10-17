@@ -1,0 +1,458 @@
+/* =====================================================================
+   v4 posters: one block per genre. Each block sets the --p-* tokens,
+   one texture, the art layout (step 0) and the widget re-skin (step 2).
+   Unifiers (do not override): Bellefair title, Rubik eyebrow, 24px
+   gutters, step bars, one gold-ish ring per poster.
+   ===================================================================== */
+
+/* grain texture, shared by a few genres */
+.tx-grain::after, [data-genre='cinema'] .poster::after, [data-genre='birthday'] .poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+[data-genre='jeweler'] .poster::after, [data-genre='contract'] .poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.12;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ==================================================== EP0 · cinema */
+[data-genre='cinema'] {
+  --p-bg: #111111;
+  --p-panel: #111111;
+  --p-ink: #F2ECE3;
+  --p-soft: #8C867D;
+  --p-accent: #D4B37A;
+  --p-rule: rgb(242 236 227 / 0.14);
+}
+[data-genre='cinema'] .poster { padding: 0; display: flex; flex-direction: column; }
+[data-genre='cinema'] .bar {
+  flex: none;
+  height: calc(72px + var(--safe-t));
+  background: #000;
+  z-index: 2;
+}
+[data-genre='cinema'] .bar.top { transform: translateY(-100%); }
+[data-genre='cinema'] .bar.bottom { position: absolute; inset-inline: 0; bottom: 0; height: 12%; transform: translateY(100%); }
+[data-genre='cinema'].in .bar { transition: transform 700ms var(--ease-in-out); transform: none; }
+[data-genre='cinema'] .frame {
+  position: relative;
+  flex: none;
+  width: 100%;
+  aspect-ratio: 2.39 / 1;
+  overflow: hidden;
+}
+[data-genre='cinema'] .frame .ph { position: absolute; inset: 0; }
+[data-genre='cinema'] .cine-card {
+  margin: 18px 24px 0;
+  display: flex;
+  justify-content: space-between;
+  letter-spacing: 0.22em;
+}
+[data-genre='cinema'] .title { letter-spacing: 0.04em; }
+[data-genre='cinema'] .panel { border-top: 0; }
+
+/* ==================================================== EP1 · jeweler catalog */
+[data-genre='jeweler'] {
+  --p-bg: #F3EDE2;
+  --p-panel: #F3EDE2;
+  --p-ink: #1E1A16;
+  --p-soft: #7A7064;
+  --p-accent: #A8853F;
+  --p-rule: rgb(30 26 22 / 0.18);
+}
+.cat-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--p-rule);
+}
+[data-genre='jeweler'] .tech {
+  position: absolute;
+  top: calc(90px + var(--safe-t));
+  left: 8px;
+  width: 62%;
+  height: auto;
+}
+[data-genre='jeweler'] .tech circle, [data-genre='jeweler'] .tech path { fill: none; stroke: var(--p-ink); stroke-width: 1.2; }
+[data-genre='jeweler'] .tech circle:first-child { stroke-width: 2; }
+[data-genre='jeweler'] .tech .dim { stroke: var(--p-accent); stroke-width: 0.8; stroke-dasharray: 3 2; }
+[data-genre='jeweler'] .tech text { font: 500 11px var(--label); fill: var(--p-accent); letter-spacing: 0.06em; }
+[data-genre='jeweler'] .spec {
+  position: absolute;
+  top: calc(100px + var(--safe-t));
+  right: 24px;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  color: var(--p-ink);
+}
+[data-genre='jeweler'] .spec li { padding-bottom: 8px; border-bottom: 1px solid var(--p-rule); min-width: 96px; }
+[data-genre='jeweler'] .inset {
+  position: absolute;
+  top: calc(300px + var(--safe-t));
+  right: 24px;
+  width: 112px;
+  height: 140px;
+  padding: 5px;
+  border: 1px solid var(--p-ink);
+  background: var(--p-bg);
+}
+[data-genre='jeweler'] .inset .ph { width: 100%; height: 100%; }
+[data-genre='jeweler'] .model {
+  position: absolute;
+  top: calc(310px + var(--safe-t));
+  left: 24px;
+  width: 50%;
+  font-size: 22px;
+  line-height: 1.1;
+}
+[data-genre='jeweler'] .visit { color: var(--p-ink); }
+[data-genre='jeweler'] .stamp { box-shadow: inset 0 0 0 4px var(--p-panel), inset 0 0 0 5px var(--p-accent), 0 0 0 1px var(--p-accent); }
+
+/* ==================================================== EP2 · lottery TV show */
+[data-genre='lottery'] {
+  --p-bg: #0E0C2E;
+  --p-panel: #0E0C2E;
+  --p-ink: #FFFFFF;
+  --p-soft: #9A97C2;
+  --p-accent: #FFD23F;
+  --p-rule: rgb(255 255 255 / 0.14);
+  --led: #FF3B3B;
+}
+[data-genre='lottery'] .poster > .ph {
+  position: absolute;
+  inset: 0;
+  opacity: 0.28;
+  filter: saturate(0.6) contrast(1.1);
+}
+[data-genre='lottery'] .poster > .ph .photo-label { top: calc(14px + var(--safe-t)); mix-blend-mode: normal; color: var(--p-soft); }
+[data-genre='lottery'] .poster::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(60% 45% at 50% 40%, rgb(255 210 63 / 0.18), transparent 70%);
+}
+.live { display: flex; align-items: center; gap: 8px; color: var(--p-ink); position: relative; }
+.live i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E5322D;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: 0.3; } }
+[data-genre='lottery'] .balls {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 56px;
+}
+[data-genre='lottery'] .ball {
+  display: grid;
+  place-content: center;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--p-bg);
+  font: 700 24px/1 var(--num);
+  box-shadow: inset -10px -12px 0 rgb(14 12 46 / 0.12), 0 0 0 3px var(--p-bg), 0 0 0 4.5px var(--p-accent);
+  transform: translateY(-120vh);
+}
+[data-genre='lottery'].in .ball { transition: transform 700ms cubic-bezier(0.34, 1.3, 0.64, 1) calc(var(--i) * 120ms); transform: none; }
+[data-genre='lottery'] .led {
+  position: relative;
+  margin-top: 40px;
+  text-align: center;
+  font: 700 120px/1 var(--num);
+  color: var(--led);
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 22px rgb(255 59 59 / 0.55);
+}
+[data-genre='lottery'] .title { color: var(--p-accent); }
+[data-genre='lottery'] .tile {
+  height: 100px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--p-bg);
+  box-shadow: 0 0 0 3px var(--p-bg), 0 0 0 4.5px var(--p-accent);
+}
+[data-genre='lottery'] .tile .x { color: var(--led); font-weight: 400; }
+[data-genre='lottery'] .tile .label { color: var(--p-bg); }
+[data-genre='lottery'] .scratch-result { font: 700 30px/1 var(--num); color: var(--led); }
+[data-genre='lottery'] .ticker {
+  display: block;
+  margin-top: 14px;
+  padding: 10px 0;
+  background: var(--p-accent);
+  color: var(--p-bg);
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+}
+[data-genre='lottery'] .ticker.on { opacity: 1; transition: opacity 300ms var(--ease-out); }
+[data-genre='lottery'] .ticker-run { display: inline-flex; width: max-content; animation: tick 16s linear infinite; }
+[data-genre='lottery'] .ticker-run span { padding: 0 18px; font: 700 18px/1 var(--num); letter-spacing: 0.04em; }
+[data-genre='lottery'] .ticker-run span::after { content: '◆'; margin-inline-start: 36px; font-size: 10px; vertical-align: middle; }
+@keyframes tick { to { transform: translateX(50%); } }
+[data-genre='lottery'] .stamp { border-color: var(--led); color: var(--led); box-shadow: inset 0 0 0 4px var(--p-panel), inset 0 0 0 5px var(--led); }
+
+/* ==================================================== EP3 · sports broadcast */
+[data-genre='sport'] {
+  --p-bg: #0B5D2E;
+  --p-panel: #07381C;
+  --p-ink: #FFFFFF;
+  --p-soft: #9FC9AE;
+  --p-accent: #FFD23F;
+  --p-rule: rgb(255 255 255 / 0.22);
+}
+[data-genre='sport'] .poster {
+  padding: 0;
+  background: repeating-linear-gradient(180deg, #0B5D2E 0 48px, #0A5429 48px 96px);
+}
+[data-genre='sport'] .poster::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  width: 180px;
+  height: 180px;
+  margin: -90px 0 0 -90px;
+  border: 2px solid rgb(255 255 255 / 0.5);
+  border-radius: 50%;
+  box-shadow: 0 -90px 0 -89px rgb(255 255 255 / 0.5);
+}
+[data-genre='sport'] .board {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: calc(48px + var(--safe-t)) 24px 14px;
+  background: #0A0A0A;
+  color: #fff;
+}
+[data-genre='sport'] .team { font: 700 30px/1 var(--num); text-align: center; }
+[data-genre='sport'] .score { display: flex; align-items: center; gap: 4px; font: 700 54px/1 var(--num); font-variant-numeric: tabular-nums; }
+[data-genre='sport'] .score b { display: grid; place-content: center; min-width: 54px; height: 64px; background: #1F1F1F; border: 1px solid rgb(255 255 255 / 0.2); overflow: hidden; }
+[data-genre='sport'] .score em { font-style: normal; color: var(--p-accent); }
+[data-genre='sport'] .live { padding: 12px 24px 0; }
+[data-genre='sport'] .wide {
+  position: relative;
+  margin: 28px 24px 0;
+  aspect-ratio: 16 / 9;
+  border: 2px solid rgb(255 255 255 / 0.6);
+}
+[data-genre='sport'] .wide .ph { position: absolute; inset: 0; }
+[data-genre='sport'] .stadium { padding: 10px 24px 0; color: var(--p-ink); }
+[data-genre='sport'] .side { background: rgb(0 0 0 / 0.25); border-width: 2px; }
+[data-genre='sport'] .side.lead { border-color: var(--p-accent); }
+[data-genre='sport'] .side h4 { font: 700 30px/1 var(--num); }
+[data-genre='sport'] .judge { background: var(--p-accent); color: #0A0A0A; border: 0; font-weight: 700; }
+[data-genre='sport'] .final {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: #0A0A0A;
+  text-align: center;
+}
+[data-genre='sport'] .final[hidden] { display: none; }
+[data-genre='sport'] .final b { font: 700 44px/1 var(--num); color: var(--p-accent); }
+
+/* ==================================================== EP4 · the contract */
+[data-genre='contract'] {
+  --p-bg: #F7F4EE;
+  --p-panel: #F7F4EE;
+  --p-ink: #1A1714;
+  --p-soft: #6E675E;
+  --p-accent: #B3261E;
+  --p-rule: rgb(26 23 20 / 0.22);
+  --p-body: var(--legal);
+}
+[data-genre='contract'] .doc { position: relative; font-family: var(--legal); }
+[data-genre='contract'] .doc h3 {
+  font: 700 30px/1 var(--legal);
+  text-align: center;
+  letter-spacing: 0.06em;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--p-ink);
+}
+[data-genre='contract'] .doc .sub { margin-top: 10px; font-size: 14px; text-align: center; color: var(--p-soft); }
+[data-genre='contract'] .doc ol { margin-top: 22px; padding-inline-start: 22px; display: grid; gap: 12px; font-size: 16px; line-height: 1.5; }
+[data-genre='contract'] .doc ol li::marker { font-weight: 700; }
+[data-genre='contract'] .initials { display: flex; gap: 10px; margin-top: 16px; }
+[data-genre='contract'] .initials span {
+  display: grid;
+  place-content: center;
+  width: 44px;
+  height: 30px;
+  border: 1px solid var(--p-rule);
+  font: 500 11px var(--label);
+  color: var(--p-soft);
+}
+[data-genre='contract'] .sigline {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: 40px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--p-ink);
+}
+[data-genre='contract'] .sigline .hand { font-size: 26px; transform: rotate(-4deg); }
+[data-genre='contract'] .annex {
+  position: absolute;
+  top: calc(44px + var(--safe-t));
+  left: 24px;
+  width: 92px;
+  padding: 4px 4px 18px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 0.1);
+  transform: rotate(-6deg);
+}
+[data-genre='contract'] .annex .ph { width: 100%; aspect-ratio: 1; }
+[data-genre='contract'] .annex .label { position: absolute; bottom: 3px; inset-inline: 0; text-align: center; font-size: 9px; }
+[data-genre='contract'] .title { font-family: var(--legal); font-weight: 700; font-size: 44px; }
+[data-genre='contract'] .count-ring .track, [data-genre='contract'] .count-ring .fill { display: none; }
+[data-genre='contract'] .count-ring .inner, [data-genre='contract'] .count-ring .num { display: block; }
+[data-genre='contract'] .count-ring { outline: 2px solid var(--p-accent); outline-offset: -2px; border-radius: 50%; transform: rotate(-8deg); }
+[data-genre='contract'] .count-ring .inner { stroke: var(--p-accent); stroke-width: 1.5; }
+[data-genre='contract'] .count-ring .num { font: 700 44px var(--num); fill: var(--p-accent); }
+[data-genre='contract'] .count-ring { box-shadow: inset 0 0 0 5px var(--p-panel), inset 0 0 0 6.5px var(--p-accent); }
+[data-genre='contract'] .count-num { display: none; }
+[data-genre='contract'] .stamp {
+  border-width: 3px;
+  box-shadow: none;
+  border-radius: 4px;
+  width: auto;
+  height: auto;
+  padding: 6px 14px;
+  font: 700 26px/1 var(--legal);
+  letter-spacing: 0.1em;
+  opacity: 0.9;
+}
+
+/* ==================================================== EP5 · kitchen catalog */
+[data-genre='catalog'] {
+  --p-bg: #FFFFFF;
+  --p-panel: #FFFFFF;
+  --p-ink: #111111;
+  --p-soft: #6B6B6B;
+  --p-accent: #FFD400;
+  --p-rule: #E2E2E2;
+}
+[data-genre='catalog'] .cat-head { color: #111; border-bottom: 3px solid #111; font-weight: 700; }
+[data-genre='catalog'] .grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+[data-genre='catalog'] .item {
+  position: relative;
+  min-height: 118px;
+  padding: 12px;
+  background: #F2F2F2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 4px;
+}
+[data-genre='catalog'] .item.photo { padding: 0; }
+[data-genre='catalog'] .item.photo .ph { position: absolute; inset: 0; }
+[data-genre='catalog'] .item .name { font: 700 18px/1.1 var(--label); }
+[data-genre='catalog'] .item .price { font: 400 12px/1 var(--label); color: var(--p-soft); }
+[data-genre='catalog'] .item.hot { background: #fff; border: 2px solid #111; }
+[data-genre='catalog'] .item.hot .price {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: grid;
+  place-content: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: var(--p-accent);
+  color: #111;
+  font: 700 26px/1 var(--num);
+  transform: rotate(-12deg) scale(0);
+}
+[data-genre='catalog'].in .item.hot .price { transition: transform 400ms cubic-bezier(0.34, 1.4, 0.64, 1) 500ms; transform: rotate(-12deg); }
+[data-genre='catalog'] .eyebrow .chap { background: #111; color: var(--p-accent); padding: 3px 6px; }
+[data-genre='catalog'] .opt { background: #F2F2F2; border: 0; }
+[data-genre='catalog'] .opt .stars { display: block; font: 400 13px/1 var(--label); color: var(--p-accent); letter-spacing: 0.1em; margin-bottom: 4px; -webkit-text-stroke: 0.5px #111; }
+[data-genre='catalog'] .opt .bar { opacity: 1; }
+[data-genre='catalog'] .opt .pct { color: #111; font-weight: 700; }
+[data-genre='catalog'] .stamp { border-color: #111; color: #111; background: var(--p-accent); box-shadow: none; font: 700 20px/1.1 var(--label); }
+
+/* ==================================================== EP6 · birthday */
+[data-genre='birthday'] {
+  --p-bg: #FF4D8D;
+  --p-panel: #FF4D8D;
+  --p-ink: #FFF4EA;
+  --p-soft: rgb(255 244 234 / 0.75);
+  --p-accent: #FFD23F;
+  --p-rule: rgb(255 244 234 / 0.3);
+}
+[data-genre='birthday'] .bigday {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 150px;
+}
+[data-genre='birthday'] .bigday b { font: 700 240px/0.8 var(--num); color: var(--p-ink); }
+[data-genre='birthday'] .bigday span { font-size: 34px; }
+[data-genre='birthday'] .avatar {
+  position: absolute;
+  top: calc(40px + var(--safe-t));
+  left: 24px;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  overflow: hidden;
+  outline: 2.5px solid var(--p-accent);
+  outline-offset: 5px;
+}
+[data-genre='birthday'] .avatar .ph { width: 100%; height: 100%; }
+[data-genre='birthday'] .confetti { position: absolute; inset: 0; pointer-events: none; }
+[data-genre='birthday'] .confetti i {
+  position: absolute;
+  width: 9px;
+  height: 15px;
+  border-radius: 1px;
+  left: calc(4% + var(--i) * 4.3%);
+  top: 6%;
+  background: var(--p-accent);
+  transform: rotate(calc(var(--i) * 41deg)) translateY(-40px);
+  opacity: 0;
+}
+[data-genre='birthday'] .confetti i:nth-child(2n) { top: 22%; }
+[data-genre='birthday'] .confetti i:nth-child(3n) { top: 40%; background: #FFF4EA; }
+[data-genre='birthday'] .confetti i:nth-child(7n) { top: 58%; }
+[data-genre='birthday'] .confetti i:nth-child(5n + 2) { top: 12%; }
+[data-genre='birthday'] .confetti i:nth-child(4n) { background: #7FA3A8; }
+[data-genre='birthday'] .confetti i:nth-child(5n) { background: #1A1A1A; width: 6px; height: 6px; border-radius: 50%; }
+[data-genre='birthday'].in .confetti i { transition: transform 900ms var(--ease-out) calc(var(--i) * 30ms), opacity 300ms linear calc(var(--i) * 30ms); transform: rotate(calc(var(--i) * 41deg)); opacity: 0.9; }
+[data-genre='birthday'] .cake .line { stroke: var(--p-ink); }
+[data-genre='birthday'] .wish { font-size: 34px; }
+[data-genre='birthday'] .story .hand { font-size: 26px; }
+
+/* ==================================================== reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .live i, [data-genre='lottery'] .ticker-run { animation: none; }
+  [data-genre='lottery'] .ball, [data-genre='cinema'] .bar, [data-genre='catalog'] .item.hot .price, [data-genre='birthday'] .confetti i { transition: none; transform: none; opacity: 1; }
+  [data-genre='catalog'] .item.hot .price { transform: rotate(-12deg); }
+}
