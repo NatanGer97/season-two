@@ -408,7 +408,9 @@
     showHint(n === 2 ? '' : 'גללי להמשך');
   }
 
-  // The avatar speaks; the wish scrolls under it like lyrics, line by line
+  // The avatar speaks; the wish scrolls under it like lyrics, line by line.
+  // The video never starts silently: if the browser refuses sound, a button
+  // waits for her tap and only then the avatar begins. Site mute = video mute.
   let lyricsStop = null;
   function lyrics(el, s, on) {
     if (lyricsStop) {
@@ -429,40 +431,11 @@
     }
     Sound.duck(true);
     el.classList.add('speaking');
-    const play = async () => {
-      if (!vid) return null;
-      try {
-        vid.muted = false;
-        await vid.play();
-      } catch (e) {
-        try {
-          vid.muted = true;
-          await vid.play();
-        } catch (e2) {
-          return null;
-        }
-      }
-      $('.kb.vid', el).classList.add('on');
-      return vid;
-    };
     let raf = 0;
-    let timer = 0;
-    (async () => {
-      const v = await play();
-      // Autoplay with sound was refused: one tap turns the voice on
-      if (v && v.muted && !Sound.muted) {
-        const b = document.createElement('button');
-        b.className = 'btn unmute-vid';
-        b.type = 'button';
-        b.dataset.nogesture = '';
-        b.textContent = 'הפעילי את הקול';
-        el.append(b);
-        b.addEventListener('click', () => {
-          v.muted = false;
-          b.remove();
-        });
-        lines.__unmute = b;
-      }
+    let gate = null;
+
+    const begin = (v) => {
+      if (v) $('.kb.vid', el).classList.add('on');
       const fallback = lines.length * 2600;
       const total = v && isFinite(v.duration) && v.duration > 1 ? v.duration * 1000 : fallback;
       const t0 = performance.now();
@@ -471,7 +444,6 @@
       const LEAD = 120; // light the line a breath before the voice reaches it
       let cur = -1;
       let done = false;
-      // Layout stays as it was while speaking; only the music comes back
       const finish = () => {
         if (done) return;
         done = true;
@@ -495,12 +467,39 @@
         else finish();
       };
       raf = requestAnimationFrame(tick);
-    })();
+    };
+
+    const tryPlay = (muted) => {
+      vid.muted = muted;
+      return vid.play().then(() => vid);
+    };
+
+    if (!vid) begin(null);
+    else if (Sound.muted) tryPlay(true).then(begin, () => begin(null));
+    else {
+      tryPlay(false).then(begin, () => {
+        // No sound allowed yet: wait for her tap, then start with the voice
+        gate = document.createElement('button');
+        gate.className = 'btn gate';
+        gate.type = 'button';
+        gate.dataset.nogesture = '';
+        gate.innerHTML = '<i></i>הקישי כדי לשמוע את נתן';
+        el.append(gate);
+        showHint('');
+        gate.addEventListener('click', () => {
+          gate.remove();
+          gate = null;
+          tryPlay(false)
+            .catch(() => tryPlay(true))
+            .then(begin, () => begin(null));
+        });
+      });
+    }
+
     lyricsStop = () => {
       cancelAnimationFrame(raf);
-      clearTimeout(timer);
+      gate?.remove();
       el.classList.remove('speaking');
-      $('.unmute-vid', el)?.remove();
     };
   }
 
@@ -796,7 +795,9 @@
   mute.classList.toggle('off', Sound.muted);
   mute.addEventListener('click', () => {
     Sound.start();
-    mute.classList.toggle('off', Sound.toggleMute());
+    const off = Sound.toggleMute();
+    mute.classList.toggle('off', off);
+    document.querySelectorAll('.kb.vid video').forEach((v) => (v.muted = off));
   });
 
   // ----------------------------------------------------------------- intro

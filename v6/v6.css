@@ -179,9 +179,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .kb { position: absolute; inset: 0; background: linear-gradient(160deg, var(--a) 0%, var(--b) 100%); will-change: transform; }
 .kb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .kb.alt { opacity: 0; background: none; }
-.kb.vid { opacity: 0; background: none; transition: opacity 1200ms var(--ease-out); }
+.kb.vid { opacity: 0; background: var(--velvet-0); transition: opacity 1200ms var(--ease-out), transform 1500ms var(--ease-in-out); }
 .kb.vid.on { opacity: 1; }
-.kb.vid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* The avatar mp4 is 9:16 with white letterbox bars; only the 16:9 middle is content */
+.kb.vid video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; clip-path: inset(34.1% 0 34.1% 0); }
 
 /* The wish scrolls like lyrics while the avatar speaks */
 .lyrics {
@@ -198,18 +199,29 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .lyrics p.past { color: rgb(246 241 234 / 0.28); }
 .lyrics p.strong.on { color: var(--gold); font-weight: 400; }
 .scene.speaking .scrim {
-  /* the avatar stays fully lit: dark only above the head and under the words */
+  /* the avatar stays fully lit; only the words below get a dark bed */
   background:
-    radial-gradient(95% 62% at 50% 30%, transparent 58%, rgb(12 8 10 / 0.3) 100%),
-    linear-gradient(180deg, rgb(12 8 10 / 0.94) 0%, rgb(12 8 10 / 0.86) 9%, rgb(12 8 10 / 0.35) 16%, transparent 21%, transparent 46%, rgb(12 8 10 / 0.55) 57%, rgb(12 8 10 / 0.9) 74%, rgb(12 8 10 / 0.97) 100%);
+    radial-gradient(95% 62% at 50% 28%, transparent 60%, rgb(12 8 10 / 0.35) 100%),
+    linear-gradient(180deg, rgb(12 8 10 / 0.35) 0%, transparent 7%, transparent 44%, rgb(12 8 10 / 0.4) 51%, rgb(12 8 10 / 0.78) 60%, rgb(12 8 10 / 0.93) 74%, rgb(12 8 10 / 0.97) 100%);
 }
 .kb.vid video { filter: saturate(0.96); }
 .scene.speaking .title { font-size: 34px; }
 /* While speaking the avatar rises so the words sit under the face, not on it */
-.scene.speaking .ph { transform: translate(calc(var(--px) * -12px), calc(var(--py) * -10px - 14%)); transition: transform 1500ms var(--ease-in-out); }
-.scene.speaking .kb.vid { background: var(--velvet-0); }
-.unmute-vid { position: absolute; top: calc(76px + var(--safe-t)); right: 50%; transform: translateX(50%); z-index: 6; }
-.unmute-vid:active { transform: translateX(50%) scale(0.96); }
+/* While speaking: zoom into the 16:9 content and lift it so the words sit under the face */
+.scene.speaking .kb.vid { transform: translateY(-16.5%) scale(1.35); }
+/* Gate: the avatar waits here until she taps, so the voice is never missed */
+.gate {
+  position: absolute; top: 34%; right: 50%; transform: translateX(50%);
+  z-index: 6; min-height: 56px; padding: 0 26px 0 22px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 15px; border-color: var(--gold); background: rgb(18 13 16 / 0.6);
+  box-shadow: 0 0 40px var(--gold-glow);
+  animation: gatepulse 2.2s ease-in-out infinite;
+}
+.gate:active { transform: translateX(50%) scale(0.96); }
+.gate i { width: 0; height: 0; border-style: solid; border-width: 7px 0 7px 11px; border-color: transparent transparent transparent var(--gold); }
+@keyframes gatepulse { 50% { box-shadow: 0 0 70px var(--gold-glow); } }
+@media (prefers-reduced-motion: reduce) { .gate { animation: none; } }
 .photo-label { position: absolute; top: calc(8% + 18px + var(--safe-t)); right: calc(6% + 70px); font: 500 10px/1 var(--sans); letter-spacing: 0.08em; color: rgb(255 255 255 / 0.6); }
 .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(12 8 10 / 0.35) 0%, transparent 22%, transparent 42%, rgb(12 8 10 / 0.86) 78%, rgb(12 8 10 / 0.96) 100%); }
 .leak { position: absolute; inset: -30%; opacity: 0; pointer-events: none; mix-blend-mode: screen; background: linear-gradient(100deg, transparent 38%, rgb(255 226 180 / 0.55) 50%, transparent 62%); }
