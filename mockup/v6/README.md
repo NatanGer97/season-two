@@ -16,7 +16,7 @@ everything moves, reacts and sounds. The photo is the screen.
 | Time under the finger | on touch screens, after a chapter closes, dragging up runs the calendar; release past 28% snaps to the next chapter. Auto-run after 6s or on wheel/keys. Force on desktop with `?scrub=1` | `app.js` `scrub()` |
 | Candles | blow into the mic (RMS > 0.11 for 4 frames) or tap. Flames glow and flicker | `widgets.js` |
 | Confetti | 140–160 pieces fall across the whole screen, 3–6s | `app.js` `confetti()` |
-| Wish lyrics | chapter 6 story step: the avatar video `photos/6.mp4` plays with its voice and the wish scrolls line by line, one line per caption cue, at the cue's start; `photos/6.srt` is parsed at load, so a re-exported SRT updates the lines with no code change; the avatar rises while speaking; music ducks. The mp4 is 9:16 with white letterbox bars, so the video is clipped to its 16:9 middle and zoomed 1.35x while speaking. The avatar never starts silently: if the browser refuses sound, a gate button waits for her tap. Site mute also mutes the video | `app.js` `lyrics()` |
+| Wish lyrics | chapter 6 story step: the avatar video `photos/6.mp4` plays with its voice and the wish scrolls line by line, one line per caption cue, at the cue's start; `photos/6.srt` is parsed at load, so a re-exported SRT updates the lines with no code change; the avatar rises while speaking; music ducks. The mp4 is 9:16 with white letterbox bars, so the video is clipped to its 16:9 middle and zoomed 1.35x while speaking. The avatar never starts silently: if the browser refuses sound, a gate button waits for her tap. Site mute also mutes the video. While the avatar speaks the music and shimmer are fully silent | `app.js` `lyrics()` |
 
 ## Beats
 
