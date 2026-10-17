@@ -154,86 +154,87 @@
     });
   }
 
-  // Finger drives time: drag up, days fly under the ring, release snaps.
-  // Falls back to an automatic run after a few seconds or on wheel/keys.
-  function scrub(to) {
+  // Time runs by itself. On a touch screen a finger can take over mid-run:
+  // touch pauses the run, dragging moves the days, release lets it continue.
+  function travel(to) {
     if (!coarse || reduce) return run(to);
     const a = cur.getTime();
     const b = to.getTime();
     if (a === b) return run(to);
     const dir = b > a ? 1 : -1;
-    const SPAN = 300; // px of drag for the whole trip
+    const SPAN = 320; // px of drag for the whole trip
     runRange = [Math.min(a, b), Math.max(a, b)];
-    showHint(dir > 0 ? 'גררי למעלה. הזמן זז עם האצבע' : 'גררי למטה');
     app.classList.add('scrubbing');
     return new Promise((res) => {
+      let raf = 0;
       let y0 = null;
-      let p = 0;
+      let base = a;
       let done = false;
-      const finish = async (snapTo) => {
+      const atDay = (t) => {
+        const d = new Date(Math.max(Math.min(a, b), Math.min(Math.max(a, b), t)));
+        d.setHours(0, 0, 0, 0);
+        return d;
+      };
+      const finish = () => {
         if (done) return;
         done = true;
-        clearTimeout(fallback);
+        cancelAnimationFrame(raf);
         off();
+        cur = new Date(b);
+        setDate(cur);
+        runRange = null;
         app.classList.remove('scrubbing');
         showHint('');
-        if (snapTo) await run(to, 700 + 1200 * (1 - p));
-        else {
-          const from = cur.getTime();
-          cur = new Date(a + (b - a) * p);
-          await run(new Date(a), 500);
-          cur = new Date(a);
-          setDate(cur);
-          done = false;
-          runRange = [Math.min(a, b), Math.max(a, b)];
-          app.classList.add('scrubbing');
-          on();
-          showHint(dir > 0 ? 'גררי למעלה. הזמן זז עם האצבע' : 'גררי למטה');
-          return;
-        }
-        runRange = null;
         res();
       };
+      const startRun = () => {
+        const from = cur.getTime();
+        if (from === b) return finish();
+        const ms = 700 + 1900 * Math.abs(b - from) / Math.abs(b - a);
+        const t0 = performance.now();
+        const frame = (now) => {
+          const p = Math.min(1, (now - t0) / ms);
+          const e = 1 - Math.pow(1 - p, 4);
+          cur = atDay(from + (b - from) * e);
+          setDate(cur, dir);
+          if (p < 1) raf = requestAnimationFrame(frame);
+          else finish();
+        };
+        raf = requestAnimationFrame(frame);
+      };
       const down = (e) => {
-        if (e.target.closest('[data-nogesture]')) return;
+        if (done || e.target.closest('[data-nogesture]')) return;
+        cancelAnimationFrame(raf);
         y0 = e.clientY;
-        clearTimeout(fallback);
+        base = cur.getTime();
+        showHint('הזמן זז עם האצבע');
       };
       const move = (e) => {
         if (y0 === null) return;
         const dy = (y0 - e.clientY) * dir;
-        p = Math.max(0, Math.min(1, dy / SPAN));
-        const d = new Date(a + (b - a) * p);
-        d.setHours(0, 0, 0, 0);
-        setDate(d, dir);
+        cur = atDay(base + (dy / SPAN) * Math.abs(b - a) * dir);
+        setDate(cur, dir);
       };
       const up = () => {
         if (y0 === null) return;
         y0 = null;
-        finish(p >= 0.28);
-      };
-      const auto = (e) => {
-        if (e.type === 'keydown' && !['ArrowDown', 'ArrowLeft', 'PageDown', ' ', 'ArrowUp', 'ArrowRight', 'PageUp'].includes(e.key)) return;
-        finish(true);
+        showHint('');
+        startRun();
       };
       const on = () => {
         app.addEventListener('pointerdown', down);
         app.addEventListener('pointermove', move);
         app.addEventListener('pointerup', up);
         app.addEventListener('pointercancel', up);
-        addEventListener('wheel', auto, { passive: true });
-        addEventListener('keydown', auto);
       };
       const off = () => {
         app.removeEventListener('pointerdown', down);
         app.removeEventListener('pointermove', move);
         app.removeEventListener('pointerup', up);
         app.removeEventListener('pointercancel', up);
-        removeEventListener('wheel', auto);
-        removeEventListener('keydown', auto);
       };
-      let fallback = setTimeout(() => finish(true), 6000);
       on();
+      startRun();
     });
   }
 
@@ -703,8 +704,7 @@
     if (isDated(to)) {
       $('#cal-note').textContent = '';
       await wait(reduce ? 0 : 350);
-      if (dir > 0) await scrub(parse(to.date));
-      else await run(parse(to.date));
+      await travel(parse(to.date));
       ring.classList.add('on');
       await wait(reduce ? 0 : 500);
       idx = i;
