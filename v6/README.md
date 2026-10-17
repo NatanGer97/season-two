@@ -11,7 +11,7 @@ everything moves, reacts and sounds. The photo is the screen.
 | Gold dust | 70 canvas particles drift up, flow away from the finger, burst on stamps and "yes" | `alive.js` |
 | Tilt | gyroscope moves photo and dust (`--px`, `--py`); desktop uses the pointer | `alive.js` |
 | Haptics | tick per day while time moves, thump on stamps (Android; iOS web has none) | `alive.js` |
-| Sound | generative pad (Am F C G, 7s each) + ticks, whoosh, chime, puff, "yes" swell. Synthesized, no files. Mute button top-left, remembered | `sound.js` |
+| Sound | generative pad (Am F C G, 7s each) + ticks, whoosh, chime, puff, "yes" swell. Synthesized, no files. Mute button top-left, remembered. Unlocks on the first touchend/click and keeps retrying until the context runs; a looping silent `<audio>` keeps iOS playing with the silent switch on | `sound.js` |
 | Words | title and story arrive word by word out of a blur | `app.js` `reveal()` |
 | Time under the finger | on touch screens, after a chapter closes, dragging up runs the calendar; release past 28% snaps to the next chapter. Auto-run after 6s or on wheel/keys. Force on desktop with `?scrub=1` | `app.js` `scrub()` |
 | Candles | blow into the mic (RMS > 0.11 for 4 frames) or tap. Flames glow and flicker | `widgets.js` |
