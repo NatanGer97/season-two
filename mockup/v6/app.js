@@ -470,28 +470,30 @@
 
     const tryPlay = (muted) => {
       vid.muted = muted;
+      if (vid.ended || vid.currentTime > 0.5) vid.currentTime = 0; // the wish always starts from its first word
       return vid.play().then(() => vid);
     };
 
     if (!vid) begin(null);
-    else if (Sound.muted) tryPlay(true).then(begin, () => begin(null));
     else {
-      tryPlay(false).then(begin, () => {
-        // No sound allowed yet: wait for her tap, then start with the voice
-        gate = document.createElement('button');
-        gate.className = 'btn gate';
-        gate.type = 'button';
-        gate.dataset.nogesture = '';
-        gate.innerHTML = '<i></i>הקישי כדי לשמוע את נתן';
-        el.append(gate);
-        showHint('');
-        gate.addEventListener('click', () => {
-          gate.remove();
-          gate = null;
-          tryPlay(false)
-            .catch(() => tryPlay(true))
-            .then(begin, () => begin(null));
-        });
+      // Always wait for her tap: she checks the phone is not on silent, then
+      // the avatar starts with its voice. Site mute is lifted by the tap.
+      gate = document.createElement('div');
+      gate.className = 'gate-wrap';
+      gate.dataset.nogesture = '';
+      gate.innerHTML = '<button class="btn gate" type="button"><i></i>הקישי כדי לשמוע את נתן</button><span class="label gate-note">ודאי שהטלפון לא על שקט</span>';
+      el.append(gate);
+      showHint('');
+      $('.gate', gate).addEventListener('click', () => {
+        gate.remove();
+        gate = null;
+        if (Sound.muted) {
+          Sound.toggleMute();
+          $('#mute').classList.remove('off');
+        }
+        tryPlay(false)
+          .catch(() => tryPlay(true))
+          .then(begin, () => begin(null));
       });
     }
 
