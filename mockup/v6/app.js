@@ -259,7 +259,7 @@
         <h2 class="title">${words(s.title)}</h2>
         <div class="part story">
           ${s.lyrics
-            ? `<div class="lyrics"><div class="lyrics-run">${s.lyrics.map((l) => `<p>${esc(l)}</p>`).join('')}</div></div>`
+            ? `<div class="lyrics"><div class="lyrics-run">${s.lyrics.map((l) => (typeof l === 'string' ? `<p>${esc(l)}</p>` : `<p class="strong">${esc(l.text)}</p>`)).join('')}</div></div>`
             : s.story.map((p) => `<p>${words(p)}</p>`).join('')}
           ${s.hand && !s.lyrics ? `<p class="hand">${esc(s.hand)}</p>` : ''}
         </div>
@@ -424,7 +424,7 @@
     let timer = 0;
     (async () => {
       const v = await play();
-      const fallback = lines.length * 3200;
+      const fallback = lines.length * 2600;
       const total = v && isFinite(v.duration) && v.duration > 1 ? v.duration * 1000 : fallback;
       const t0 = performance.now();
       const per = total / lines.length;

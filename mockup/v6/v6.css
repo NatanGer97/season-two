@@ -196,6 +196,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .lyrics p { font-weight: 300; font-size: 25px; line-height: 1.45; padding: 7px 0; color: rgb(246 241 234 / 0.42); transition: color 700ms var(--ease-out), transform 700ms var(--ease-out), text-shadow 700ms var(--ease-out); transform: scale(0.96); }
 .lyrics p.on { color: var(--ivory); transform: scale(1); text-shadow: 0 0 34px var(--gold-glow), var(--text-shadow); }
 .lyrics p.past { color: rgb(246 241 234 / 0.28); }
+.lyrics p.strong.on { color: var(--gold); font-weight: 400; }
 .scene.speaking .scrim { background: linear-gradient(180deg, rgb(12 8 10 / 0.25) 0%, transparent 18%, rgb(12 8 10 / 0.55) 48%, rgb(12 8 10 / 0.92) 80%, rgb(12 8 10 / 0.97) 100%); }
 .scene.speaking .title { font-size: 34px; }
 .photo-label { position: absolute; top: calc(8% + 18px + var(--safe-t)); right: calc(6% + 70px); font: 500 10px/1 var(--sans); letter-spacing: 0.08em; color: rgb(255 255 255 / 0.6); }
