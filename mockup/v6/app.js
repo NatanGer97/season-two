@@ -431,7 +431,7 @@
         b.type = 'button';
         b.dataset.nogesture = '';
         b.textContent = 'הפעילי את הקול';
-        box.before(b);
+        el.append(b);
         b.addEventListener('click', () => {
           v.muted = false;
           b.remove();
