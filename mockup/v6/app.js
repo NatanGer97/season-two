@@ -239,6 +239,31 @@
 
   // ---------------------------------------------------------------- scenes
   const isDated = (s) => !s.kind;
+
+  // Captions file → timed lines. One cue = one line, at the cue's start.
+  function parseSrt(text) {
+    const out = [];
+    for (const block of text.replace(/\r/g, '').trim().split(/\n\s*\n/)) {
+      const ls = block.trim().split('\n');
+      const m = ls[1] && ls[1].match(/(\d+):(\d+):(\d+)[,.](\d+)/);
+      if (!m) continue;
+      const at = +m[1] * 3600 + +m[2] * 60 + +m[3] + +m[4] / 1000;
+      const raw = ls.slice(2).join(' ').trim();
+      if (!raw) continue;
+      out.push({ at, text: raw.replace(/\*\*/g, '').trim(), strong: raw.startsWith('**') });
+    }
+    return out;
+  }
+  for (const s of S) {
+    if (!s.srt) continue;
+    fetch(s.srt, { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.text() : Promise.reject()))
+      .then((txt) => {
+        const l = parseSrt(txt);
+        if (l.length) s.lyrics = l;
+      })
+      .catch(() => {});
+  }
   const stepsOf = (s) => (s.widget ? 3 : 2);
 
   const ph = (s) =>
@@ -443,6 +468,7 @@
       const t0 = performance.now();
       const per = total / lines.length;
       const starts = s.lyrics.map((l, k) => (typeof l === 'object' && l.at != null ? l.at * 1000 : k * per));
+      const LEAD = 120; // light the line a breath before the voice reaches it
       let cur = -1;
       let done = false;
       // Layout stays as it was while speaking; only the music comes back
@@ -453,7 +479,7 @@
         showHint('גללי להמשך');
       };
       const tick = (now) => {
-        const t = v && !v.paused ? v.currentTime * 1000 : now - t0;
+        const t = (v && !v.paused ? v.currentTime * 1000 : now - t0) + LEAD;
         let i = 0;
         for (let k = 0; k < starts.length; k++) if (t >= starts[k]) i = k;
         if (i !== cur) {
@@ -464,7 +490,7 @@
           run.style.transform = `translateY(${-Math.max(0, y)}px)`;
           Sound.step();
         }
-        const over = v ? v.ended || (v.paused && t >= total - 50) : t >= total + 1500;
+        const over = v ? v.ended || (v.paused && t >= total - 50) : t >= total + 1500 + LEAD;
         if (!over) raf = requestAnimationFrame(tick);
         else finish();
       };

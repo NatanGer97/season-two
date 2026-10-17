@@ -186,25 +186,28 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* The wish scrolls like lyrics while the avatar speaks */
 .lyrics {
   position: relative;
-  height: min(46vh, 380px);
+  height: min(38vh, 320px);
   overflow: hidden;
   text-align: center;
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
 }
-.lyrics-run { padding: 28% 0 60%; transition: transform 1100ms var(--ease-in-out); }
-.lyrics p { font-weight: 300; font-size: 25px; line-height: 1.45; padding: 7px 0; color: rgb(246 241 234 / 0.42); transition: color 700ms var(--ease-out), transform 700ms var(--ease-out), text-shadow 700ms var(--ease-out); transform: scale(0.96); }
+.lyrics-run { padding: 28% 0 60%; transition: transform 650ms var(--ease-out); }
+.lyrics p { font-weight: 300; font-size: 25px; line-height: 1.45; padding: 7px 0; color: rgb(246 241 234 / 0.42); transition: color 220ms var(--ease-out), transform 400ms var(--ease-out), text-shadow 400ms var(--ease-out); transform: scale(0.96); }
 .lyrics p.on { color: var(--ivory); transform: scale(1); text-shadow: 0 0 34px var(--gold-glow), var(--text-shadow); }
 .lyrics p.past { color: rgb(246 241 234 / 0.28); }
 .lyrics p.strong.on { color: var(--gold); font-weight: 400; }
 .scene.speaking .scrim {
-  /* the studio's white wall becomes a dark room with one light on the avatar */
+  /* the avatar stays fully lit: dark only above the head and under the words */
   background:
-    radial-gradient(72% 46% at 50% 47%, transparent 28%, rgb(12 8 10 / 0.62) 72%, rgb(12 8 10 / 0.9) 100%),
-    linear-gradient(180deg, rgb(12 8 10 / 0.88) 0%, rgb(12 8 10 / 0.5) 22%, rgb(12 8 10 / 0.22) 40%, rgb(12 8 10 / 0.55) 58%, rgb(12 8 10 / 0.93) 80%, rgb(12 8 10 / 0.97) 100%);
+    radial-gradient(95% 62% at 50% 30%, transparent 58%, rgb(12 8 10 / 0.3) 100%),
+    linear-gradient(180deg, rgb(12 8 10 / 0.94) 0%, rgb(12 8 10 / 0.86) 9%, rgb(12 8 10 / 0.35) 16%, transparent 21%, transparent 46%, rgb(12 8 10 / 0.55) 57%, rgb(12 8 10 / 0.9) 74%, rgb(12 8 10 / 0.97) 100%);
 }
-.kb.vid video { filter: saturate(0.9) brightness(0.9) contrast(1.05) sepia(0.14); }
+.kb.vid video { filter: saturate(0.96); }
 .scene.speaking .title { font-size: 34px; }
+/* While speaking the avatar rises so the words sit under the face, not on it */
+.scene.speaking .ph { transform: translate(calc(var(--px) * -12px), calc(var(--py) * -10px - 14%)); transition: transform 1500ms var(--ease-in-out); }
+.scene.speaking .kb.vid { background: var(--velvet-0); }
 .unmute-vid { position: absolute; top: calc(76px + var(--safe-t)); right: 50%; transform: translateX(50%); z-index: 6; }
 .unmute-vid:active { transform: translateX(50%) scale(0.96); }
 .photo-label { position: absolute; top: calc(8% + 18px + var(--safe-t)); right: calc(6% + 70px); font: 500 10px/1 var(--sans); letter-spacing: 0.08em; color: rgb(255 255 255 / 0.6); }
