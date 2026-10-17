@@ -192,6 +192,7 @@ window.Sound = (() => {
       api.sparkle(12);
     },
     step() { ping(660, 0.04, 0.25); },
+    duck(on) { if (ctx && started) music.gain.setTargetAtTime(on ? 0.12 : 0.9, ctx.currentTime, 0.8); },
   };
   return api;
 })();

@@ -110,7 +110,7 @@ window.SCENES = [
     title: 'חותמים ומשכנתא',
     photo: 'photos/4.jpg',
     placeholder: { label: 'יד חותמת על חוזה', tones: ['#E6DCCB', '#5A4E40'] },
-    story: ['חוזה, עורך דין, יועץ משכנתא ועשרות חתימות.', 'היד עם הטבעת חתמה על הבית הראשון שלנו. עכשיו נשאר רק לחכות למפתח.'],
+    story: ['חתמנו. חוזה, עורך דין ועשרות חתימות, ביד עם טבעת.', 'המשכנתא עוד בתהליך, הבנק עוד שואל שאלות, והמפתח כבר בספירה לאחור.'],
     art: {
       doc: 'הסכם מכר',
       sub: 'בין: נתן ולינור (להלן: "הרוכשים")',
@@ -157,8 +157,23 @@ window.SCENES = [
     dateLabel: '19 באוקטובר 2026 · היום',
     title: 'יום הולדת שמח, לינורי',
     photo: 'photos/6.jpg',
+    video: 'photos/6.mp4', // the avatar speaking the wish. Missing file = photo only
     placeholder: { label: 'האווטר של נתן', tones: ['#E7B98F', '#5C3B33'] },
-    story: ['כאן תבוא הברכה של נתן, בכתב היד שלו.'], // TBD: Natan writes this
+    story: ['הברכה של נתן.'],
+    // Wish lines scroll like lyrics while the avatar speaks. Timed to the video
+    // length when there is one, otherwise ~3s per line. TBD: Natan writes this.
+    lyrics: [
+      'לינורי,',
+      'לפני חצי שנה שאלתי אותך שאלה אחת,',
+      'ומאז כל יום הוא תשובה.',
+      'עברנו צורף, הגרלה ודרבי,',
+      'חתמנו על בית, ועוד נריב על מיקרוגל.',
+      'היום יום הולדת שלך,',
+      'ואני רק רוצה להגיד תודה.',
+      'שתהיה לך שנה כמוך: יפה, חכמה, ומצחיקה.',
+      'אוהב אותך.',
+      'נתן',
+    ],
     hand: 'מזל טוב, אהובה שלי',
     art: { day: '19', month: 'באוקטובר' },
     widget: { type: 'candles', count: 3, hint: 'כבי את הנרות', wish: 'מזל טוב' },
