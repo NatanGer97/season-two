@@ -9,6 +9,7 @@ window.Sound = (() => {
   let muted = false;
   try { muted = localStorage.getItem('linor-mute') === '1'; } catch (e) {}
   let lastTick = 0;
+  let quiet = false; // the avatar is speaking: bed and shimmer are silent
   let chordTimer = null;
   let shimmerTimer = null;
   const voices = [];
@@ -102,7 +103,7 @@ window.Sound = (() => {
     step();
     music.gain.setTargetAtTime(0.9, ctx.currentTime, 2.5);
     const shimmer = () => {
-      ping(2400 + Math.random() * 2200, 0.02, 1.2);
+      if (!quiet) ping(2400 + Math.random() * 2200, 0.02, 1.2);
       shimmerTimer = setTimeout(shimmer, 2500 + Math.random() * 4500);
     };
     shimmerTimer = setTimeout(shimmer, 3000);
@@ -192,7 +193,11 @@ window.Sound = (() => {
       api.sparkle(12);
     },
     step() { ping(660, 0.04, 0.25); },
-    duck(on) { if (ctx && started) music.gain.setTargetAtTime(on ? 0.12 : 0.9, ctx.currentTime, 0.8); },
+    // Only the avatar's voice while it speaks: music fades out in ~1s, back in ~3s
+    duck(on) {
+      quiet = on;
+      if (ctx && started) music.gain.setTargetAtTime(on ? 0 : 0.9, ctx.currentTime, on ? 0.35 : 1.2);
+    },
   };
   return api;
 })();

@@ -429,12 +429,12 @@
       }
       return;
     }
-    Sound.duck(true);
     el.classList.add('speaking');
     let raf = 0;
     let gate = null;
 
     const begin = (v) => {
+      Sound.duck(true);
       if (v) $('.kb.vid', el).classList.add('on');
       const fallback = lines.length * 2600;
       const total = v && isFinite(v.duration) && v.duration > 1 ? v.duration * 1000 : fallback;
@@ -460,7 +460,6 @@
           lines.forEach((l, k) => l.classList.toggle('past', k < i));
           const y = lines[i].offsetTop - box.clientHeight * 0.38;
           run.style.transform = `translateY(${-Math.max(0, y)}px)`;
-          Sound.step();
         }
         const over = v ? v.ended || (v.paused && t >= total - 50) : t >= total + 1500 + LEAD;
         if (!over) raf = requestAnimationFrame(tick);
