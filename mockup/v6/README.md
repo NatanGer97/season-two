@@ -29,5 +29,5 @@ Mic and gyroscope need HTTPS (or localhost). On a real phone serve over HTTPS (V
 or `ngrok`/`cloudflared` tunnel). Sound starts on the first tap.
 
 Serve `mockup/` on :5177 (`linor-v4` in `.claude/launch.json`), open `/v6/`.
-Photos: drop `mockup/photos/<scene>/main.jpg` (0–6). `mockup/v5/photos` and `mockup/v6/photos` link there.
+Photos: drop `mockup/photos/0.jpg` … `6.jpg` (one per scene). `mockup/v5/photos` and `mockup/v6/photos` link there.
 Debug: `?scene=N&step=M`, `?scene=N&cal`, `?scrub=1`.
