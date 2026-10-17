@@ -15,7 +15,7 @@ window.SCENES = [
     chapter: 'פרק 0',
     dateLabel: '21 במאי 2026 · ערב שבועות',
     title: 'מהנקודה שבה עצרנו',
-    photo: 'photos/0.jpg',
+    photo: '../photos/0.jpg',
     placeholder: { label: 'תמונה מההצעה', tones: ['#E9C08A', '#6B4A3A'] },
     note: 'ערב שבועות',
     story: ['הטבעת על האצבע, הלב עוד דופק מהר.', 'מכאן מתחילה העונה השנייה. בלי תסריט, רק אנחנו.'],
@@ -30,7 +30,7 @@ window.SCENES = [
     chapter: 'פרק 1',
     dateLabel: 'יוני 2026',
     title: 'סאגת הקטנת הטבעת',
-    photo: 'photos/1.jpg',
+    photo: '../photos/1.jpg',
     placeholder: { label: 'הטבעת / הצורף', tones: ['#D9D2C4', '#8A7A5C'] },
     story: ['טבעת אחת, צורף אחד ושלוש נסיעות.', 'פעמיים נתן, פעם אחת לינור, עד שהיא פשוט ישבה בול.'],
     art: { catalog: 'קטלוג · קיץ 2026', model: 'דגם: טבעת אירוסין', spec: ['זהב 14K', 'יהלום מרכזי', 'מידה: ?'], page: '01' },
@@ -55,7 +55,7 @@ window.SCENES = [
     chapter: 'פרק 2',
     dateLabel: 'יוני 2026',
     title: 'דרמת מחיר למשתכן',
-    photo: 'photos/2.jpg',
+    photo: '../photos/2.jpg',
     placeholder: { label: 'לפטופ בלילה', tones: ['#8FA6C9', '#2E3442'] },
     story: [
       'נרשמנו לראשל״צ, בית דגן ורחובות, וחיכינו לתוצאות כמו לגמר המונדיאל.',
@@ -79,8 +79,8 @@ window.SCENES = [
     chapter: 'פרק 3',
     dateLabel: 'יולי–אוגוסט 2026',
     title: 'הדרבי: בת ים נגד רמלה',
-    photo: 'photos/3.jpg',
-    photo2: 'photos/3b.jpg',
+    photo: '../photos/3.jpg',
+    photo2: '../photos/3b.jpg',
     placeholder: { label: 'טיילת בת ים / רמלה', tones: ['#7FA3A8', '#3D4A3A'] },
     story: ['הים מול המחיר. העיר של נתן מול הבניין של לינור.', 'סיורים, טבלאות וויכוחים, עד שהגיעה הצעה שאי אפשר לסרב לה.'],
     art: { league: 'ליגת הדירות · מחזור 1', home: 'בת ים', away: 'רמלה', stadium: 'אצטדיון החיים' },
@@ -108,7 +108,7 @@ window.SCENES = [
     chapter: 'פרק 4',
     dateLabel: '4 באוקטובר 2026',
     title: 'חותמים ומשכנתא',
-    photo: 'photos/4.jpg',
+    photo: '../photos/4.jpg',
     placeholder: { label: 'יד חותמת על חוזה', tones: ['#E6DCCB', '#5A4E40'] },
     story: ['חתמנו. חוזה, עורך דין ועשרות חתימות, ביד עם טבעת.', 'המשכנתא עוד בתהליך, הבנק עוד שואל שאלות, והמפתח כבר בספירה לאחור.'],
     art: {
@@ -128,7 +128,7 @@ window.SCENES = [
     chapter: 'פרק 5',
     dateLabel: 'עכשיו',
     title: 'קרב השיפוץ והמיקרוגל',
-    photo: 'photos/5.jpg',
+    photo: '../photos/5.jpg',
     placeholder: { label: 'קטלוג מטבחים', tones: ['#BFC3BC', '#3B3F3C'] },
     story: ['מטבח, ארונות, ריצוף... ואז הוא הגיע: מיקרוגל מובנה ב-3,000 ש״ח.', 'הדיון עדיין פתוח. רשמית.'],
     art: {
@@ -156,14 +156,14 @@ window.SCENES = [
     chapter: 'פרק 6',
     dateLabel: '19 באוקטובר 2026 · היום',
     title: 'יום הולדת שמח, לינורי',
-    photo: 'photos/6.jpg',
-    video: 'photos/6.mp4', // the avatar speaking the wish. Missing file = photo only
+    photo: '../photos/6.jpg',
+    video: '../photos/6.mp4', // the avatar speaking the wish. Missing file = photo only
     placeholder: { label: 'האווטר של נתן', tones: ['#E7B98F', '#5C3B33'] },
     story: ['הברכה של נתן.'], // shown only when `lyrics` is missing
     // The wish, one line per caption cue of the video, at the cue's start
     // second. Source of truth is photos/6.srt: when it exists it is parsed at
     // load and replaces this list. `**text**` in the SRT = a gold line.
-    srt: 'photos/6.srt',
+    srt: '../photos/6.srt',
     lyrics: [
       { at: 0.2, text: 'לינורי שלי, ❤️', strong: true },
       { at: 2.417, text: 'מזל טוב, אהובה שלי!' },
@@ -191,7 +191,7 @@ window.SCENES = [
   },
   {
     kind: 'roadmap',
-    photo: 'photos/roadmap.jpg',
+    photo: '../photos/roadmap.jpg',
     tint: '#2E3340',
     chapter: 'עונה 3',
     title: 'מפת הדרכים לעתיד',
