@@ -211,8 +211,8 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .scene.speaking .kb.vid { transform: translateY(-16.5%) scale(1.35); }
 /* Gate: the avatar waits here until she taps, so the voice is never missed */
 .gate {
-  position: absolute; top: 34%; right: 50%; transform: translateX(50%);
-  z-index: 6; min-height: 56px; padding: 0 26px 0 22px;
+  position: absolute; top: 37%; right: 50%; transform: translateX(50%);
+  z-index: 6; min-height: 56px; padding: 0 26px 0 22px; white-space: nowrap;
   display: flex; align-items: center; gap: 12px;
   font-size: 15px; border-color: var(--gold); background: rgb(18 13 16 / 0.6);
   box-shadow: 0 0 40px var(--gold-glow);
