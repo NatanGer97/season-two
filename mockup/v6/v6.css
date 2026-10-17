@@ -197,8 +197,10 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .lyrics p.on { color: var(--ivory); transform: scale(1); text-shadow: 0 0 34px var(--gold-glow), var(--text-shadow); }
 .lyrics p.past { color: rgb(246 241 234 / 0.28); }
 .lyrics p.strong.on { color: var(--gold); font-weight: 400; }
-.scene.speaking .scrim { background: linear-gradient(180deg, rgb(12 8 10 / 0.25) 0%, transparent 18%, rgb(12 8 10 / 0.55) 48%, rgb(12 8 10 / 0.92) 80%, rgb(12 8 10 / 0.97) 100%); }
+.scene.speaking .scrim { background: radial-gradient(120% 90% at 50% 40%, transparent 40%, rgb(12 8 10 / 0.55) 100%), linear-gradient(180deg, rgb(12 8 10 / 0.78) 0%, rgb(12 8 10 / 0.2) 28%, rgb(12 8 10 / 0.5) 50%, rgb(12 8 10 / 0.92) 80%, rgb(12 8 10 / 0.97) 100%); }
+.kb.vid video { filter: saturate(0.9) brightness(0.94) sepia(0.08); }
 .scene.speaking .title { font-size: 34px; }
+.unmute-vid { margin: 10px 0 4px; }
 .photo-label { position: absolute; top: calc(8% + 18px + var(--safe-t)); right: calc(6% + 70px); font: 500 10px/1 var(--sans); letter-spacing: 0.08em; color: rgb(255 255 255 / 0.6); }
 .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(12 8 10 / 0.35) 0%, transparent 22%, transparent 42%, rgb(12 8 10 / 0.86) 78%, rgb(12 8 10 / 0.96) 100%); }
 .leak { position: absolute; inset: -30%; opacity: 0; pointer-events: none; mix-blend-mode: screen; background: linear-gradient(100deg, transparent 38%, rgb(255 226 180 / 0.55) 50%, transparent 62%); }
