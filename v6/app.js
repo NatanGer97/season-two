@@ -244,6 +244,8 @@
   const ph = (s) =>
     `<div class="ph"><div class="kb" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><img src="${s.photo}" alt="" onload="this.parentNode.classList.add('real')" onerror="this.remove()" /><span class="photo-label">placeholder · ${s.placeholder.label}</span></div>${
       s.photo2 ? `<div class="kb alt"><img src="${s.photo2}" alt="" onerror="this.remove()" /></div>` : ''
+    }${
+      s.video ? `<div class="kb vid"><video src="${s.video}" playsinline preload="auto" onerror="this.parentNode.remove()"></video></div>` : ''
     }</div>`;
 
   function sceneEl(s) {
@@ -256,8 +258,10 @@
         <p class="eyebrow label"><span class="chap">${s.chapter}</span><span>${s.dateLabel}</span></p>
         <h2 class="title">${words(s.title)}</h2>
         <div class="part story">
-          ${s.story.map((p) => `<p>${words(p)}</p>`).join('')}
-          ${s.hand ? `<p class="hand">${esc(s.hand)}</p>` : ''}
+          ${s.lyrics
+            ? `<div class="lyrics"><div class="lyrics-run">${s.lyrics.map((l) => `<p>${esc(l)}</p>`).join('')}</div></div>`
+            : s.story.map((p) => `<p>${words(p)}</p>`).join('')}
+          ${s.hand && !s.lyrics ? `<p class="hand">${esc(s.hand)}</p>` : ''}
         </div>
         ${s.widget ? '<div class="part widget"></div>' : ''}
         <div class="steps">${Array.from({ length: stepsOf(s) }, () => '<span></span>').join('')}</div>
@@ -360,6 +364,7 @@
     }
     const after = panel.getBoundingClientRect().top;
     Sound.step();
+    if (s.lyrics) lyrics(el, s, n === 1);
     if (!reduce) {
       const move = anim(panel, [{ transform: `translateY(${before - after}px)` }, { transform: 'none' }], { duration: 900, easing: EASE_DRAWER });
       if (n === 1) {
@@ -376,6 +381,79 @@
     }
     step = n;
     showHint(n === 2 ? '' : 'גללי להמשך');
+  }
+
+  // The avatar speaks; the wish scrolls under it like lyrics, line by line
+  let lyricsStop = null;
+  function lyrics(el, s, on) {
+    if (lyricsStop) {
+      lyricsStop();
+      lyricsStop = null;
+    }
+    const vid = $('.kb.vid video', el);
+    const box = $('.lyrics', el);
+    const run = $('.lyrics-run', el);
+    const lines = [...run.children];
+    if (!on) {
+      Sound.duck(false);
+      if (vid) {
+        vid.pause();
+        $('.kb.vid', el).classList.remove('on');
+      }
+      return;
+    }
+    Sound.duck(true);
+    el.classList.add('speaking');
+    const play = async () => {
+      if (!vid) return null;
+      try {
+        vid.muted = false;
+        await vid.play();
+      } catch (e) {
+        try {
+          vid.muted = true;
+          await vid.play();
+        } catch (e2) {
+          return null;
+        }
+      }
+      $('.kb.vid', el).classList.add('on');
+      return vid;
+    };
+    let raf = 0;
+    let timer = 0;
+    (async () => {
+      const v = await play();
+      const fallback = lines.length * 3200;
+      const total = v && isFinite(v.duration) && v.duration > 1 ? v.duration * 1000 : fallback;
+      const t0 = performance.now();
+      const per = total / lines.length;
+      let cur = -1;
+      const tick = (now) => {
+        const t = v && !v.paused ? v.currentTime * 1000 : now - t0;
+        const i = Math.min(lines.length - 1, Math.floor(t / per));
+        if (i !== cur) {
+          cur = i;
+          lines.forEach((l, k) => l.classList.toggle('on', k === i));
+          lines.forEach((l, k) => l.classList.toggle('past', k < i));
+          const y = lines[i].offsetTop - box.clientHeight * 0.38;
+          run.style.transform = `translateY(${-Math.max(0, y)}px)`;
+          Sound.step();
+        }
+        if (t < total + 1500) raf = requestAnimationFrame(tick);
+        else {
+          el.classList.remove('speaking');
+          Sound.duck(false);
+          showHint('גללי להמשך');
+        }
+      };
+      raf = requestAnimationFrame(tick);
+    })();
+    lyricsStop = () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(timer);
+      el.classList.remove('speaking');
+    };
   }
 
   function mountWidget(el, s) {
@@ -566,6 +644,11 @@
     const from = S[idx];
     const to = S[i];
 
+    if (lyricsStop) {
+      lyricsStop();
+      lyricsStop = null;
+      Sound.duck(false);
+    }
     if (from && isDated(from)) await closeScene(idx);
     else await closePanel();
 
