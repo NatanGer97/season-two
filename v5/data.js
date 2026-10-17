@@ -103,9 +103,9 @@ window.SCENES = [
     genre: 'contract',
     tint: '#4A2222',
     accent: '#B3261E',
-    date: '2026-09-20', // TBD: signing date
+    date: '2026-10-04', // signing day
     chapter: 'פרק 4',
-    dateLabel: 'ספטמבר–אוקטובר 2026',
+    dateLabel: '4 באוקטובר 2026',
     title: 'חותמים ומשכנתא',
     photo: 'photos/4/main.jpg',
     placeholder: { label: 'יד חותמת על חוזה', tones: ['#E6DCCB', '#5A4E40'] },
@@ -117,7 +117,7 @@ window.SCENES = [
       initials: ['נ.ג.', 'ל.'],
       sign: 'חתימת הרוכשים',
     },
-    widget: { type: 'countdown', label: 'ימים עד שהמפתח אצלנו', from: '2026-09-20', target: '2027-01-15T12:00:00', stamp: 'נחתם' }, // TBD: key date
+    widget: { type: 'countdown', label: 'ימים עד שהמפתח אצלנו', from: '2026-10-04', target: '2027-01-15T12:00:00', stamp: 'נחתם' }, // TBD: key date
   },
   {
     genre: 'catalog',
