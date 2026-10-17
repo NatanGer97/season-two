@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" content="#0F0E0D" />
+  <title>הסיפור שלנו · עונה 2 · v4 anthology</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=Rubik:wght@300;400;500;700;900&family=Karantina:wght@400;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="v4.css" />
+  <link rel="stylesheet" href="posters.css" />
+</head>
+<body>
+  <div id="app" class="app">
+
+    <!-- Calendar: the dark "TV" between episodes -->
+    <section id="calendar" class="calendar" aria-hidden="true">
+      <header class="cal-head">
+        <h1 id="cal-month" class="cal-month"></h1>
+        <span id="cal-year" class="cal-year"></span>
+      </header>
+      <div class="cal-dow"><span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span class="sat">ש׳</span></div>
+      <div class="cal-body">
+        <div id="cal-grid" class="cal-grid"></div>
+        <span id="cal-ring" class="cal-ring"></span>
+      </div>
+      <p id="cal-note" class="hand cal-note"></p>
+      <nav id="timeline" class="timeline"></nav>
+    </section>
+
+    <!-- Episode layer -->
+    <section id="stage" class="stage"></section>
+
+    <!-- Intro: cinema title card -->
+    <section id="intro" class="intro">
+      <div class="bar top"></div>
+      <div class="intro-lines"></div>
+      <button id="intro-go" class="btn intro-go" type="button">לצפייה בפרק</button>
+      <div class="bar bottom"></div>
+    </section>
+
+    <p id="hint" class="hint" aria-live="polite"></p>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="widgets.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
