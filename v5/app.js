@@ -153,7 +153,7 @@
 
   // Photo placeholder: two flat tones, replaced by the real file when present
   const ph = (s) =>
-    `<div class="ph" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><span class="photo-label">placeholder · ${s.placeholder.label}</span><img src="${s.photo}" alt="" onerror="this.remove()" /></div>`;
+    `<div class="ph" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><span class="photo-label">placeholder · ${s.placeholder.label}</span><img src="${s.photo}" alt="" onload="this.parentNode.classList.add('real')" onerror="this.remove()" /></div>`;
 
   const art = (s) => ph(s);
 
