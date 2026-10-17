@@ -24,6 +24,15 @@ Intro: ring heartbeat on the last line, then a gold flash, dust burst and a chor
 Chapter open: photo bursts out of its calendar cell (scale 1.35 + blur → sharp), a light leak sweeps,
 then the text layer rises. Step 2 only gets a glass surface for the widget.
 
+## Live
+
+GitHub Pages: https://natanger97.github.io/season-two/v6/ (repo `NatanGer97/season-two`, public, pages are `noindex`).
+Publish an update from the worktree:
+
+```bash
+git push origin "$(git subtree split --prefix mockup -q):refs/heads/gh-pages" --force
+```
+
 ## Phone testing
 
 Mic and gyroscope need HTTPS (or localhost). On a real phone serve over HTTPS (Vercel preview,
