@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>הסיפור שלנו · עונה 2</title>
+  <meta name="theme-color" content="#0b0a0d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700&family=Heebo:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Background calendar -->
+  <div id="calendar" aria-hidden="true">
+    <div class="cal-head"><span id="cal-month"></span><span id="cal-year"></span></div>
+    <div class="cal-dow"><i>א</i><i>ב</i><i>ג</i><i>ד</i><i>ה</i><i>ו</i><i>ש</i></div>
+    <div id="cal-grid"></div>
+  </div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header id="topbar">
+    <div class="brand">הסיפור שלנו <span>עונה 2</span></div>
+    <div class="date" aria-live="polite">
+      <span id="d-day" class="d-day"></span>
+      <span class="d-rest"><span id="d-month"></span><span id="d-year"></span></span>
+    </div>
+    <div class="top-actions">
+      <button id="auto" class="icon-btn" aria-label="ניגון אוטומטי">
+        <span class="i-play">▶</span><span class="i-pause">❚❚</span>
+        <span class="auto-bar"><i id="auto-bar"></i></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="stage"></main>
+
+  <nav id="controls">
+    <button id="prev" class="icon-btn" aria-label="הסצנה הקודמת">→</button>
+    <div class="ctrl-mid">
+      <span id="count"></span>
+      <span id="hint">גללי כדי להמשיך</span>
+    </div>
+    <button id="next" class="icon-btn" aria-label="הסצנה הבאה">←</button>
+  </nav>
+
+  <footer id="strip"><div id="strip-track"></div></footer>
+
+  <section id="intro">
+    <div class="intro-inner"></div>
+    <div class="intro-skip">הקישי כדי לדלג</div>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <script src="js/scenes.js"></script>
+  <script src="js/widgets.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
