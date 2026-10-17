@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+  <meta name="theme-color" content="#120D10" />
+  <title>הסיפור שלנו · עונה 2 · v5 velvet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Hebrew:wght@300;400;600&family=IBM+Plex+Sans+Hebrew:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="v5.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <div class="velvet" aria-hidden="true"></div>
+
+    <!-- Calendar: the lid of the box. Always underneath. -->
+    <section id="calendar" class="calendar" aria-hidden="true">
+      <header class="cal-head">
+        <h1 id="cal-month" class="cal-month"></h1>
+        <span id="cal-year" class="cal-year"></span>
+      </header>
+      <div class="cal-dow"><span>א׳</span><span>ב׳</span><span>ג׳</span><span>ד׳</span><span>ה׳</span><span>ו׳</span><span class="sat">ש׳</span></div>
+      <div class="cal-body">
+        <div id="cal-grid" class="cal-grid"></div>
+        <span id="cal-ring" class="cal-ring"></span>
+      </div>
+      <p id="cal-note" class="hand cal-note"></p>
+      <nav id="timeline" class="timeline"></nav>
+    </section>
+
+    <!-- Episode layer -->
+    <section id="stage" class="stage"></section>
+
+    <!-- Intro -->
+    <section id="intro" class="intro">
+      <span class="intro-ring" aria-hidden="true"></span>
+      <div class="intro-lines"></div>
+      <button id="intro-go" class="btn intro-go" type="button">לצפייה בפרק</button>
+    </section>
+
+    <p id="hint" class="hint" aria-live="polite"></p>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="widgets.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
