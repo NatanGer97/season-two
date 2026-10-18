@@ -220,7 +220,8 @@ window.Sound = (() => {
       songEl.volume = 1;
       songEl.currentTime = 0;
       songEl.onended = () => api.duck(false);
-      songEl.play().catch(() => {});
+      // el.started resolves true once playback begins, false if the browser refused
+      songEl.started = songEl.play().then(() => true, () => false);
       api.duck(true);
       return songEl;
     },
@@ -231,12 +232,13 @@ window.Sound = (() => {
       api.duck(false);
       const t0 = performance.now();
       const fade = (now) => {
-        const p = Math.min(1, (now - t0) / 400);
-        el.volume = 1 - p;
+        // a frame's timestamp can precede t0: clamp, or volume leaves [0, 1] and throws
+        const p = Math.max(0, Math.min(1, (now - t0) / 400));
+        try { el.volume = 1 - p; } catch (e) {}
         if (p < 1) requestAnimationFrame(fade);
         else {
           el.pause();
-          el.volume = 1;
+          try { el.volume = 1; } catch (e) {}
         }
       };
       requestAnimationFrame(fade);
