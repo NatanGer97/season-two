@@ -650,7 +650,7 @@
       const last = roll.lastElementChild.getBoundingClientRect();
       const box = el.getBoundingClientRect();
       const dist = last.top + last.height / 2 - (box.top + box.height / 2);
-      const song = s.song ? Sound.song(s.song) : null;
+      const song = s.song ? Sound.song(s.song, { loop: true }) : null; // the chorus goes round until she leaves
       const ms = song ? 22500 : dist * 20;
       const a = roll.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-dist}px)` }], { duration: reduce ? 1 : ms, easing: 'linear', fill: 'both' });
       $('.skip', el).addEventListener('click', () => a.finish());
