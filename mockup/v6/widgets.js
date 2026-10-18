@@ -287,7 +287,10 @@ window.Widgets = (() => {
     const xs = Array.from({ length: cfg.count }, (_, i) => 160 + (i - (cfg.count - 1) / 2) * 52);
     el.innerHTML = `
       <div class="blow-row">
-        <button class="btn blow" type="button" data-nogesture>נשפי לתוך הטלפון</button>
+        <button class="btn blow" type="button" data-nogesture>
+          <svg class="mic" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><rect x="9" y="2.5" width="6" height="11.5" rx="3" fill="currentColor"/><path d="M6.5 11.5a5.5 5.5 0 0 0 11 0M12 17v3.5M9 20.5h6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="blow-text">${cfg.cta}</span>
+        </button>
         <span class="label blow-state">${cfg.hint}</span>
       </div>
       <svg class="cake" viewBox="0 0 320 180">
@@ -368,12 +371,12 @@ window.Widgets = (() => {
         stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false } });
       } catch (e) {
         btn.disabled = false;
-        state.textContent = 'אין מיקרופון. געי בנרות';
+        state.textContent = 'אין מיקרופון, געי בנרות';
         return;
       }
       btn.classList.add('listening');
-      btn.textContent = 'מקשיב...';
-      state.textContent = 'נשפי חזק';
+      btn.querySelector('.blow-text').textContent = 'מקשיב... נשפי חזק';
+      state.textContent = 'נשפי לתוך הטלפון, או געי בנרות';
       actx = new (window.AudioContext || window.webkitAudioContext)();
       const src = actx.createMediaStreamSource(stream);
       const an = actx.createAnalyser();

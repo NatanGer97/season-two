@@ -360,8 +360,14 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .poll-note { margin-top: 14px; font-size: 19px; min-height: 1.2em; }
 
 /* candles: real glow, blow into the mic */
-.blow-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
-.blow.listening { border-color: var(--gold); box-shadow: 0 0 20px var(--gold-glow); animation: listen 1.4s ease-in-out infinite; }
+/* One solid gold button says what to do: tap, then blow. Touching a candle is the quiet alternative. */
+.blow-row { display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 6px; }
+.blow { display: inline-flex; align-items: center; justify-content: center; gap: 10px; width: 100%; font-weight: 600; color: var(--ink); background: var(--gold); border-color: var(--gold); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: 0 14px 34px -12px var(--gold-glow); }
+.blow:active { background: var(--gold-deep); border-color: var(--gold-deep); }
+.blow .mic { flex: none; }
+.blow.listening { color: var(--gold); background: rgb(18 13 16 / 0.35); border-color: var(--gold); box-shadow: 0 0 20px var(--gold-glow); animation: listen 1.4s ease-in-out infinite; }
+.blow[disabled] { opacity: 1; }
+.blow-state { text-align: center; }
 @keyframes listen { 50% { box-shadow: 0 0 34px var(--gold-glow); } }
 .cake { display: block; width: 100%; height: 180px; overflow: visible; }
 .cake .line { fill: none; stroke: rgb(246 241 234 / 0.8); stroke-width: 1.5; }
