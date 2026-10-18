@@ -260,6 +260,18 @@
     }
     return out;
   }
+  // The avatar's video is fetched whole in the background from the first tap,
+  // so when its chapter opens it plays from memory instead of the network.
+  function prefetchVideos() {
+    for (const s of S) {
+      if (!s.video || s.videoBlob || s.videoFetching) continue;
+      s.videoFetching = true;
+      fetch(s.video)
+        .then((r) => (r.ok ? r.blob() : Promise.reject()))
+        .then((b) => (s.videoBlob = URL.createObjectURL(b)))
+        .catch(() => (s.videoFetching = false));
+    }
+  }
   for (const s of S) {
     if (!s.srt) continue;
     fetch(s.srt, { cache: 'no-cache' })
@@ -276,7 +288,7 @@
     `<div class="ph"><div class="kb" style="--a:${s.placeholder.tones[0]};--b:${s.placeholder.tones[1]}"><img src="${s.photo}" alt="" onload="this.parentNode.classList.add('real')" onerror="this.remove()" /><span class="photo-label">placeholder · ${s.placeholder.label}</span></div>${
       s.photo2 ? `<div class="kb alt"><img src="${s.photo2}" alt="" onerror="this.remove()" /></div>` : ''
     }${
-      s.video ? `<div class="kb vid"><video src="${s.video}" playsinline preload="auto" onerror="this.parentNode.remove()"></video></div>` : ''
+      s.video ? `<div class="kb vid"><video src="${s.videoBlob || s.video}" playsinline preload="auto" onerror="this.parentNode.remove()"></video></div>` : ''
     }</div>`;
 
   function sceneEl(s) {
@@ -492,16 +504,23 @@
       gate.innerHTML = '<button class="btn gate" type="button"><i></i>הקישי כדי לשמוע את נתן</button><span class="label gate-note">ודאי שהטלפון לא על שקט</span>';
       el.append(gate);
       showHint('');
-      $('.gate', gate).addEventListener('click', () => {
-        gate.remove();
-        gate = null;
+      const btn = $('.gate', gate);
+      btn.addEventListener('click', () => {
+        if (btn.disabled) return;
+        btn.disabled = true;
+        btn.lastChild.textContent = 'רק רגע…'; // while the video buffers
         if (Sound.muted) {
           Sound.toggleMute();
           $('#mute').classList.remove('off');
         }
+        const go = (v) => {
+          gate?.remove();
+          gate = null;
+          begin(v);
+        };
         tryPlay(false)
           .catch(() => tryPlay(true))
-          .then(begin, () => begin(null));
+          .then(go, () => go(null));
       });
     }
 
@@ -840,6 +859,7 @@
   async function start() {
     Sound.start();
     Alive.enableTilt();
+    prefetchVideos();
     $('#intro').classList.add('gone');
     cur = parse(S[0].date);
     lastDay = null;
