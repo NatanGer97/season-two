@@ -619,22 +619,11 @@
         <h2 class="title">${words(s.title)}</h2>
         <ol class="road">${s.steps.map((t, k) => `<li class="${k === 0 ? 'now' : ''}"><i class="still" style="--t:${t.tone}"></i><b>${t.label}</b><span class="label">${t.state}</span></li>`).join('')}</ol>
         <p class="title road-end">${s.end}</p>`;
-    } else if (s.kind === 'credits') {
-      el.innerHTML = `
-        <button class="btn skip" type="button" data-nogesture>דלגי</button>
-        <dl class="roll">${s.lines.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}<div><dd style="color:var(--gold)">סוף עונה 2</dd></div></dl>`;
     } else {
       el.innerHTML = `
-        <p class="label">רגע, יש עוד משהו</p>
-        <div class="env" data-nogesture>
-          <div class="env-back"></div>
-          <div class="card"><h3>${s.gift.name}</h3><p>${s.gift.line}</p><a class="btn" href="${s.gift.href}" style="display:inline-grid;place-content:center;text-decoration:none">${s.gift.cta}</a></div>
-          <div class="env-front"></div>
-          <div class="env-flap"></div>
-          <span class="env-seal"></span>
-        </div>
-        <p class="label gift-tap">הקישי לפתיחה</p>
-        <button class="btn again" type="button">לצפות שוב</button>`;
+        <button class="btn skip" type="button" data-nogesture>דלגי</button>
+        <dl class="roll">${s.lines.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}<div><dd style="color:var(--gold)">סוף עונה 2</dd></div></dl>
+        <button class="btn again" type="button" data-nogesture>לצפות שוב</button>`;
     }
     return el;
   }
@@ -654,26 +643,17 @@
       showHint(NEXT);
     }
     if (s.kind === 'credits') {
+      // The roll climbs until "end of season 2" rests mid-screen, then offers a replay
       const roll = $('.roll', el);
-      const dist = roll.scrollHeight + 80;
-      const a = roll.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-dist}px)` }], { duration: reduce ? 1 : 22000, easing: 'linear', fill: 'both' });
+      const last = roll.lastElementChild.getBoundingClientRect();
+      const box = el.getBoundingClientRect();
+      const dist = last.top + last.height / 2 - (box.top + box.height / 2);
+      const a = roll.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-dist}px)` }], { duration: reduce ? 1 : dist * 20, easing: 'linear', fill: 'both' });
       $('.skip', el).addEventListener('click', () => a.finish());
-      a.finished.then(() => idx === i && next());
-    }
-    if (s.kind === 'gift') {
-      const env = $('.env', el);
-      env.addEventListener('click', () => {
-        if (env.classList.contains('open')) return;
-        env.classList.add('open');
-        Sound.whoosh(0.7);
-        Alive.thump();
-        $('.gift-tap', el).style.opacity = 0;
-        setTimeout(() => {
-          Sound.chime();
-          sparkle($('.card', el), 22);
-          confetti(null, 120);
-          $('.again', el).classList.add('on');
-        }, 1600);
+      a.finished.then(() => {
+        if (idx !== i) return;
+        $('.skip', el).style.opacity = 0;
+        $('.again', el).classList.add('on');
       });
       $('.again', el).addEventListener('click', () => location.reload());
     }
@@ -738,7 +718,6 @@
       busy = false;
       return;
     }
-    if (s && s.kind === 'gift') return;
     await goScene(idx + 1, 1);
   }
 
