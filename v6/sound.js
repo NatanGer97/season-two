@@ -212,10 +212,11 @@ window.Sound = (() => {
       return muted;
     },
     // A song file under the moment: the bed ducks while it plays. Returns the element.
-    song(src) {
+    song(src, { loop = false } = {}) {
       if (!songEl) primeSong();
       if (!songEl) return null;
       songEl.src = src;
+      songEl.loop = loop;
       songEl.muted = muted;
       songEl.volume = 1;
       songEl.currentTime = 0;
