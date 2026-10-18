@@ -284,7 +284,6 @@ window.Widgets = (() => {
   // Blow into the phone: the mic hears a puff and a candle goes out.
   // Tap works too. The stream is closed when the widget unmounts.
   function candles(el, cfg, ctx) {
-    const xs = Array.from({ length: cfg.count }, (_, i) => 160 + (i - (cfg.count - 1) / 2) * 52);
     el.innerHTML = `
       <div class="blow-row">
         <button class="btn blow" type="button" data-nogesture>
@@ -293,29 +292,16 @@ window.Widgets = (() => {
         </button>
         <span class="label blow-state">${cfg.hint}</span>
       </div>
-      <svg class="cake" viewBox="0 0 320 180">
-        <defs>
-          <radialGradient id="glow" cx="50%" cy="60%" r="50%"><stop offset="0" stop-color="#FFD27A" stop-opacity=".9"/><stop offset="1" stop-color="#FFD27A" stop-opacity="0"/></radialGradient>
-          <linearGradient id="flame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF3C4"/><stop offset=".55" stop-color="#FFB347"/><stop offset="1" stop-color="#E8641B"/></linearGradient>
-        </defs>
-        <path class="line" d="M64 108 H256 V168 H64 Z M64 130 C96 140 128 120 160 130 S224 140 256 130" />
-        <path class="line" d="M34 168 H286" />
-        ${xs
-          .map(
-            (x, i) => `<g data-i="${i}">
-              <circle class="halo" cx="${x}" cy="44" r="34" fill="url(#glow)" />
-              <rect class="candle" x="${x - 4}" y="62" width="8" height="46" rx="1.5" />
-              <path class="flame" d="M${x} 28 C${x + 8} 40 ${x + 7} 52 ${x} 56 C${x - 7} 52 ${x - 8} 40 ${x} 28 Z" />
-              <path class="smoke" d="M${x} 52 c-6 -8 6 -14 0 -22 s6 -12 0 -18" />
-              <rect class="hit" x="${x - 24}" y="14" width="48" height="96" data-nogesture />
-            </g>`
-          )
-          .join('')}
-      </svg>
+      <div class="cake">
+        <div class="candles">${Array.from({ length: cfg.count }, (_, i) => `<button class="candle" type="button" aria-label="נר ${i + 1}" data-nogesture><span class="halo"></span><span class="flame"></span><span class="smoke"></span></button>`).join('')}</div>
+        <div class="tier top"></div>
+        <div class="tier bottom"></div>
+        <div class="plate"></div>
+      </div>
       <p class="wish"></p>`;
     let out = 0;
     const state = el.querySelector('.blow-state');
-    const groups = [...el.querySelectorAll('.cake g')];
+    const groups = [...el.querySelectorAll('.cake .candle')];
 
     // The birthday song starts when the last flame goes out. Sound.start() on
     // her taps keeps the shared <audio> unlocked for iOS; the clip's length sets
@@ -353,7 +339,7 @@ window.Widgets = (() => {
       return true;
     };
     groups.forEach((g) =>
-      g.querySelector('.hit').addEventListener('click', () => {
+      g.addEventListener('click', () => {
         ctx.sound?.start();
         blowOut(g);
       })
