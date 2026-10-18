@@ -630,19 +630,10 @@
   function panelEl(s) {
     const el = document.createElement('article');
     el.className = `end ${s.kind}`;
-    if (s.kind === 'roadmap') {
-      el.innerHTML = `
-        ${s.photo ? `<div class="end-ph"><img src="${s.photo}" alt="" onerror="this.parentNode.remove()" /></div>` : ''}
-        <p class="label" style="color:var(--gold)">${s.chapter}</p>
-        <h2 class="title">${words(s.title)}</h2>
-        <ol class="road">${s.steps.map((t, k) => `<li class="${k === 0 ? 'now' : ''}"><i class="still" style="--t:${t.tone}"></i><b>${t.label}</b><span class="label">${t.state}</span></li>`).join('')}</ol>
-        <p class="title road-end">${s.end}</p>`;
-    } else {
-      el.innerHTML = `
-        <button class="btn skip" type="button" data-nogesture>דלגי</button>
-        <dl class="roll">${s.lines.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}<div><dd style="color:var(--gold)">סוף עונה 2</dd></div></dl>
-        <button class="btn again" type="button" data-nogesture>לצפות שוב</button>`;
-    }
+    el.innerHTML = `
+      <button class="btn skip" type="button" data-nogesture>דלגי</button>
+      <dl class="roll">${s.lines.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}<div><dd style="color:var(--gold)">סוף עונה 2</dd></div></dl>
+      <button class="btn again" type="button" data-nogesture>לצפות שוב</button>`;
     return el;
   }
 
@@ -653,20 +644,15 @@
     app.style.setProperty('--tint', s.tint || '#2C1F26');
     await anim(el, [{ opacity: 0 }, { opacity: 1 }], { duration: 900, easing: EASE_OUT, always: true });
 
-    if (s.kind === 'roadmap') {
-      reveal(el, '.title .w', 0, 90, 1000);
-      [...el.querySelectorAll('.road li, .road-end')].forEach((n, k) =>
-        n.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 600 + k * 260, easing: EASE_OUT, fill: 'backwards' })
-      );
-      showHint(NEXT);
-    }
     if (s.kind === 'credits') {
-      // The roll climbs until "end of season 2" rests mid-screen, then offers a replay
+      // The roll climbs under the song until "end of season 2" rests mid-screen, then offers a replay
       const roll = $('.roll', el);
       const last = roll.lastElementChild.getBoundingClientRect();
       const box = el.getBoundingClientRect();
       const dist = last.top + last.height / 2 - (box.top + box.height / 2);
-      const a = roll.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-dist}px)` }], { duration: reduce ? 1 : dist * 20, easing: 'linear', fill: 'both' });
+      const song = s.song ? Sound.song(s.song) : null;
+      const ms = song ? 22500 : dist * 20;
+      const a = roll.animate([{ transform: 'translateY(0)' }, { transform: `translateY(${-dist}px)` }], { duration: reduce ? 1 : ms, easing: 'linear', fill: 'both' });
       $('.skip', el).addEventListener('click', () => a.finish());
       a.finished.then(() => {
         if (idx !== i) return;
@@ -690,6 +676,7 @@
     busy = true;
     clearTimeout(autoNext);
     showHint('');
+    Sound.songStop();
     if (cleanup) {
       cleanup();
       cleanup = null;
@@ -808,7 +795,7 @@
     Sound.start();
     const off = Sound.toggleMute();
     mute.classList.toggle('off', off);
-    document.querySelectorAll('.kb.vid video, audio.song').forEach((v) => (v.muted = off));
+    document.querySelectorAll('.kb.vid video').forEach((v) => (v.muted = off));
   });
 
   // ----------------------------------------------------------------- intro
