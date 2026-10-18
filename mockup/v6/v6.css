@@ -102,13 +102,31 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 .hand { display: inline-block; font-family: var(--display); font-weight: 300; color: var(--gold); outline: 1px dashed rgb(226 196 150 / 0.35); outline-offset: 5px; }
 
+/* How to move on: a glass pill with a breathing chevron, readable on any photo.
+   Until her first gesture the pill glows (teach); then it only breathes. */
 .hint {
-  position: absolute; inset-inline: 0; bottom: calc(14px + var(--safe-b)); z-index: 30;
-  text-align: center; font: 500 11px/1 var(--sans); letter-spacing: 0.12em; color: var(--ivory-soft);
-  text-shadow: 0 1px 8px rgb(0 0 0 / 0.6);
-  opacity: 0; transition: opacity 700ms var(--ease-out); pointer-events: none;
+  position: absolute; inset-inline: 0; bottom: calc(16px + var(--safe-b)); z-index: 30;
+  display: flex; justify-content: center; pointer-events: none;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
 }
-.hint.on { opacity: 1; }
+.hint.on { opacity: 1; transform: none; }
+.hint-pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 20px 11px 16px; border-radius: var(--r-pill);
+  font: 500 14px/1 var(--sans); letter-spacing: 0.06em; color: var(--ivory);
+  background: rgb(18 13 16 / 0.55); border: 1px solid rgb(226 196 150 / 0.4);
+  box-shadow: 0 12px 30px -10px rgb(0 0 0 / 0.75);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+}
+.hint.teach .hint-pill { border-color: rgb(226 196 150 / 0.7); animation: hintglow 2.2s var(--ease-in-out) infinite; }
+.hint-arrow { flex: none; color: var(--gold); filter: drop-shadow(0 0 6px var(--gold-glow)); animation: hintup 1.6s var(--ease-in-out) infinite; }
+.hint.down .hint-arrow { animation-name: hintdown; }
+.hint.plain .hint-arrow { display: none; }
+.hint.plain .hint-pill { padding-inline: 20px; }
+@keyframes hintup { 0%, 100% { transform: translateY(3px); opacity: 0.55; } 50% { transform: translateY(-3px); opacity: 1; } }
+@keyframes hintdown { 0%, 100% { transform: rotate(180deg) translateY(3px); opacity: 0.55; } 50% { transform: rotate(180deg) translateY(-3px); opacity: 1; } }
+@keyframes hintglow { 50% { box-shadow: 0 0 36px var(--gold-glow), 0 12px 30px -10px rgb(0 0 0 / 0.75); } }
 
 .flash { position: absolute; inset: 0; z-index: 60; pointer-events: none; opacity: 0; background: radial-gradient(60% 50% at 50% 30%, rgb(255 230 190 / 0.95), rgb(226 196 150 / 0.4) 50%, transparent 80%); }
 
@@ -234,7 +252,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .panel {
   position: absolute; inset-inline: 0; bottom: -240px;
   max-height: calc(82% + 240px);
-  padding: 30px 26px calc(240px + 30px + var(--safe-b));
+  padding: 30px 26px calc(240px + 74px + var(--safe-b));
   color: var(--ivory);
   text-shadow: var(--text-shadow);
   overflow: hidden;
@@ -416,7 +434,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 /* ------------------------------------------------------------ reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .app { transition: none; }
-  .aurora i, .cal-ring.on, .env-seal, .cake .flame, .cake .halo, .intro-ring.beat, .blow.listening { animation: none; }
+  .aurora i, .cal-ring.on, .env-seal, .cake .flame, .cake .halo, .intro-ring.beat, .blow.listening, .hint-arrow, .hint.teach .hint-pill { animation: none; }
   .w { opacity: 1; }
   .eyebrow { opacity: 1; }
   .ph { transition: none; transform: none; }
