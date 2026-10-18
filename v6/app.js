@@ -22,6 +22,11 @@
   const grid = $('#cal-grid');
   const ring = $('#cal-ring');
   const hint = $('#hint');
+  // The gesture that moves on, in her words: a swipe on a phone, the wheel on a desk
+  const touchy = matchMedia('(pointer: coarse)').matches;
+  const NEXT = touchy ? 'החליקי למעלה להמשך' : 'גללי למטה להמשך';
+  hint.classList.toggle('down', !touchy);
+  hint.classList.add('teach');
   const flash = $('#flash');
 
   const parse = (s) => {
@@ -406,7 +411,8 @@
       await move;
     }
     step = n;
-    showHint(n === 2 ? '' : 'גללי להמשך');
+    // No swipe cue on the widget step, nor under the avatar's gate: the wish shows it when it ends
+    showHint(n === 2 || (n === 1 && s.lyrics) ? '' : NEXT);
   }
 
   // The avatar speaks; the wish scrolls under it like lyrics, line by line.
@@ -449,7 +455,7 @@
         if (done) return;
         done = true;
         Sound.duck(false);
-        showHint('גללי להמשך');
+        showHint(NEXT);
       };
       const tick = (now) => {
         const t = (v && !v.paused ? v.currentTime * 1000 : now - t0) + LEAD;
@@ -511,7 +517,7 @@
     const ctx = {
       done(after = 4600) {
         clearTimeout(autoNext);
-        showHint('גללי להמשך');
+        showHint(NEXT);
         autoNext = setTimeout(() => next(), after);
       },
       stamp: stampIn,
@@ -645,7 +651,7 @@
       [...el.querySelectorAll('.road li, .road-end')].forEach((n, k) =>
         n.animate([{ opacity: 0, transform: 'translateY(16px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 600 + k * 260, easing: EASE_OUT, fill: 'backwards' })
       );
-      showHint('גללי להמשך');
+      showHint(NEXT);
     }
     if (s.kind === 'credits') {
       const roll = $('.roll', el);
@@ -713,7 +719,7 @@
         for (let n = 1; n < stepsOf(to); n++) await setStep(n);
       } else {
         step = 0;
-        showHint('גללי להמשך');
+        showHint(NEXT);
       }
     } else {
       idx = i;
@@ -750,9 +756,12 @@
   }
 
   function showHint(t) {
-    hint.textContent = t;
+    $('.hint-text', hint).textContent = t;
     hint.classList.toggle('on', !!t);
+    hint.classList.toggle('plain', !!t && t !== NEXT);
   }
+  // Her first gesture: she knows the way now, the pill stops glowing
+  const taught = () => hint.classList.remove('teach');
 
   // One gesture = one move. Interactive elements opt out with data-nogesture.
   let wheelAcc = 0;
@@ -767,6 +776,7 @@
       wheelAcc += e.deltaY;
       if (Math.abs(wheelAcc) > 40) {
         wheelLock = now + 1200;
+        taught();
         wheelAcc > 0 ? next() : prev();
         wheelAcc = 0;
       }
@@ -781,14 +791,17 @@
   addEventListener('touchend', (e) => {
     if (!touch) return;
     const dy = touch.y - e.changedTouches[0].clientY;
-    if (Math.abs(dy) > 40 && performance.now() - touch.t < 800) dy > 0 ? next() : prev();
+    if (Math.abs(dy) > 40 && performance.now() - touch.t < 800) {
+      taught();
+      dy > 0 ? next() : prev();
+    }
     touch = null;
   });
 
   addEventListener('keydown', (e) => {
     if (app.classList.contains('scrubbing')) return;
-    if (['ArrowDown', 'ArrowLeft', 'PageDown', ' '].includes(e.key)) (e.preventDefault(), next());
-    if (['ArrowUp', 'ArrowRight', 'PageUp'].includes(e.key)) (e.preventDefault(), prev());
+    if (['ArrowDown', 'ArrowLeft', 'PageDown', ' '].includes(e.key)) (e.preventDefault(), taught(), next());
+    if (['ArrowUp', 'ArrowRight', 'PageUp'].includes(e.key)) (e.preventDefault(), taught(), prev());
   });
 
   // ------------------------------------------------------------------ mute
@@ -855,7 +868,7 @@
     idx = 0;
     step = 0;
     await openScene(0);
-    showHint('גללי להמשך');
+    showHint(NEXT);
     busy = false;
   }
 
