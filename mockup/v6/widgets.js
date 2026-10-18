@@ -322,7 +322,8 @@ window.Widgets = (() => {
     // how long the scene lingers before moving on.
     const sing = () => {
       const el = cfg.song ? ctx.sound?.song(cfg.song) : null;
-      if (!el) return 8000;
+      if (!el || ctx.sound?.muted) return 8000; // nothing to hear: don't linger
+      el.started?.then((ok) => !ok && ctx.done(8000)); // the browser refused: don't linger either
       return (isFinite(el.duration) && el.duration > 1 ? el.duration * 1000 : 22000) + 2000;
     };
 
