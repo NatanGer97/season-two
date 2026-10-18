@@ -314,6 +314,43 @@ window.Widgets = (() => {
     const state = el.querySelector('.blow-state');
     const groups = [...el.querySelectorAll('.cake g')];
 
+    // The birthday song: a short clip that starts when the last flame goes out.
+    // iOS lets a media element play later only if it already played inside a
+    // gesture, so her first tap (or the blow button) primes it muted and pauses.
+    let song = null;
+    let primed = false;
+    let wanted = false;
+    if (cfg.song) {
+      song = document.createElement('audio');
+      song.className = 'song';
+      song.src = cfg.song;
+      song.preload = 'auto';
+      song.setAttribute('playsinline', '');
+      el.append(song);
+    }
+    const prime = () => {
+      if (!song || primed) return;
+      primed = true;
+      song.muted = true;
+      song.play().then(() => {
+        if (!wanted) {
+          song.pause();
+          song.currentTime = 0;
+          song.muted = !!ctx.sound?.muted;
+        }
+      }).catch(() => (primed = false));
+    };
+    const sing = () => {
+      if (!song) return 8000;
+      wanted = true;
+      song.muted = !!ctx.sound?.muted;
+      song.currentTime = 0;
+      song.play().catch(() => {});
+      ctx.sound?.duck(true);
+      song.addEventListener('ended', () => ctx.sound?.duck(false), { once: true });
+      return (isFinite(song.duration) && song.duration > 1 ? song.duration * 1000 : 22000) + 2000;
+    };
+
     const blowOut = (g) => {
       const flame = g.querySelector('.flame');
       if (!flame || flame.classList.contains('out')) return false;
@@ -334,12 +371,17 @@ window.Widgets = (() => {
           ctx.confetti(null, 160);
           ctx.sparkle(el.querySelector('.cake'), 18);
           ctx.sound?.chime();
-          ctx.done(8000);
+          ctx.done(sing());
         }, 500);
       }
       return true;
     };
-    groups.forEach((g) => g.querySelector('.hit').addEventListener('click', () => blowOut(g)));
+    groups.forEach((g) =>
+      g.querySelector('.hit').addEventListener('click', () => {
+        prime();
+        blowOut(g);
+      })
+    );
 
     // Microphone: RMS over a short window. A puff is loud and short.
     let stream = null;
@@ -348,6 +390,7 @@ window.Widgets = (() => {
     const btn = el.querySelector('.blow');
     btn.addEventListener('click', async () => {
       if (stream) return;
+      prime();
       btn.disabled = true;
       try {
         stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false } });
@@ -389,6 +432,10 @@ window.Widgets = (() => {
       cancelAnimationFrame(raf);
       stream?.getTracks().forEach((t) => t.stop());
       actx?.close();
+      if (song && !song.paused) {
+        song.pause();
+        ctx.sound?.duck(false);
+      }
     };
   }
 

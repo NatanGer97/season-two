@@ -808,7 +808,7 @@
     Sound.start();
     const off = Sound.toggleMute();
     mute.classList.toggle('off', off);
-    document.querySelectorAll('.kb.vid video').forEach((v) => (v.muted = off));
+    document.querySelectorAll('.kb.vid video, audio.song').forEach((v) => (v.muted = off));
   });
 
   // ----------------------------------------------------------------- intro
