@@ -103,7 +103,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .hand { display: inline-block; font-family: var(--display); font-weight: 300; color: var(--gold); outline: 1px dashed rgb(226 196 150 / 0.35); outline-offset: 5px; }
 
 /* How to move on: a quiet line of text and a chevron that breathes upward,
-   no box. Until her first gesture (teach) the text is ivory and the chevron glows. */
+   no box. Until her first gesture (teach) the text is ivory and the chevron breathes faster.
+   The chevron's glow is a static drop-shadow on purpose: animating filter on the
+   SVG blacked out the whole page on iOS Safari. */
 .hint {
   position: absolute; inset-inline: 0; bottom: calc(18px + var(--safe-b)); z-index: 30;
   display: flex; justify-content: center; pointer-events: none;
@@ -119,10 +121,9 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 }
 .hint.teach .hint-cue { color: var(--ivory); }
 .hint-arrow { flex: none; color: var(--gold); filter: drop-shadow(0 0 5px var(--gold-glow)); animation: hintup 1.6s var(--ease-in-out) infinite; }
-.hint.teach .hint-arrow { animation: hintup 1.6s var(--ease-in-out) infinite, hintglow 2.2s var(--ease-in-out) infinite; }
+.hint.teach .hint-arrow { animation-duration: 1.2s; }
 .hint.plain .hint-arrow { display: none; }
 @keyframes hintup { 0%, 100% { transform: translateY(3px); opacity: 0.55; } 50% { transform: translateY(-3px); opacity: 1; } }
-@keyframes hintglow { 50% { filter: drop-shadow(0 0 12px var(--gold)) drop-shadow(0 0 4px var(--gold-glow)); } }
 
 .flash { position: absolute; inset: 0; z-index: 60; pointer-events: none; opacity: 0; background: radial-gradient(60% 50% at 50% 30%, rgb(255 230 190 / 0.95), rgb(226 196 150 / 0.4) 50%, transparent 80%); }
 
