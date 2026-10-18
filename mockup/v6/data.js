@@ -187,7 +187,7 @@ window.SCENES = [
     ],
     hand: 'מזל טוב, אהובה שלי',
     art: { day: '19', month: 'באוקטובר' },
-    widget: { type: 'candles', count: 3, hint: 'כבי את הנרות', wish: 'מזל טוב' },
+    widget: { type: 'candles', count: 3, hint: 'כבי את הנרות', wish: 'מזל טוב', song: '../photos/yom-huledet.mp3' },
   },
   {
     kind: 'roadmap',
