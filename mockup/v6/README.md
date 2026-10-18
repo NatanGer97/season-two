@@ -13,7 +13,7 @@ everything moves, reacts and sounds. The photo is the screen.
 | Haptics | tick per day while time moves, thump on stamps (Android; iOS web has none) | `alive.js` |
 | Sound | generative pad (Am F C G, 7s each) + ticks, whoosh, chime, puff, "yes" swell. Synthesized, no files. Mute button top-left, remembered. Unlocks on the first touchend/click and keeps retrying until the context runs; a looping silent `<audio>` keeps iOS playing with the silent switch on | `sound.js` |
 | Words | title and story arrive word by word out of a blur | `app.js` `reveal()` |
-| Way on | a glass pill at the bottom says the gesture in her words ("החליקי למעלה" on touch, "גללי למטה" with a wheel) with a breathing chevron; it glows until her first gesture, then only breathes. Hidden on the widget step and under the avatar's gate | `app.js` `showHint()` |
+| Way on | a glass pill at the bottom says the gesture in her words ("החליקי למעלה" on touch, "גללי" on a desk) with a chevron that breathes upward. Until her first gesture a ghost finger swipes up above the pill (dot + fading trail, 2.6s loop) and the pill glows; then only the pill stays. Hidden on the widget step and under the avatar's gate | `app.js` `showHint()`, `v6.css` `.ghost` |
 | Time under the finger | the calendar always runs by itself (2.6s). On touch screens a finger can take over mid-run: touch pauses, drag moves the days, release lets it continue. Force on desktop with `?scrub=1` | `app.js` `travel()` |
 | Candles | blow into the mic (RMS > 0.11 for 4 frames) or tap. Flames glow and flicker | `widgets.js` |
 | Confetti | 140–160 pieces fall across the whole screen, 3–6s | `app.js` `confetti()` |

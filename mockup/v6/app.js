@@ -22,10 +22,10 @@
   const grid = $('#cal-grid');
   const ring = $('#cal-ring');
   const hint = $('#hint');
-  // The gesture that moves on, in her words: a swipe on a phone, the wheel on a desk
+  // The gesture that moves on, in her words. The ghost finger and the chevron
+  // always go up: a swipe, or two fingers on a trackpad.
   const touchy = matchMedia('(pointer: coarse)').matches;
-  const NEXT = touchy ? 'החליקי למעלה להמשך' : 'גללי למטה להמשך';
-  hint.classList.toggle('down', !touchy);
+  const NEXT = touchy ? 'החליקי למעלה להמשך' : 'גללי להמשך';
   hint.classList.add('teach');
   const flash = $('#flash');
 
