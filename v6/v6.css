@@ -256,6 +256,7 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
   transition: background-color 700ms var(--ease-out), box-shadow 700ms var(--ease-out);
 }
 .panel.glass {
+  max-height: calc(92% + 240px);
   background: var(--glass);
   -webkit-backdrop-filter: blur(28px) saturate(1.3); backdrop-filter: blur(28px) saturate(1.3);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 -20px 60px rgb(0 0 0 / 0.4);
@@ -332,9 +333,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 .side .arg.gold { color: var(--gold); font-weight: 500; }
 .judge { margin-top: 14px; width: 100%; }
 .judge[hidden] { display: none; }
-.final { display: grid; gap: 4px; margin-top: 16px; padding: 16px; border-radius: var(--r-tile); background: rgb(226 196 150 / 0.12); box-shadow: inset 0 0 0 1px rgb(226 196 150 / 0.4); text-align: center; }
+/* The verdict takes the hint line's place under the score, so the drawer never grows past the screen */
+.widget.over .w-hint { display: none; }
+.final { display: flex; align-items: baseline; justify-content: center; gap: 12px; margin-top: 14px; padding: 10px 16px; border-radius: var(--r-tile); background: rgb(226 196 150 / 0.12); box-shadow: inset 0 0 0 1px rgb(226 196 150 / 0.4); text-align: center; }
 .final[hidden] { display: none; }
-.final b { font: 400 34px/1.1 var(--display); color: var(--gold); }
+.final b { font: 400 28px/1.1 var(--display); color: var(--gold); }
 
 .count { display: flex; align-items: center; gap: 22px; }
 .count-ring { width: 128px; height: 128px; flex: none; }
