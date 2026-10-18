@@ -59,8 +59,7 @@ const URL = 'http://localhost:5177/v4/';
   await busyWait(900); await shot('s6-done');
   await at(7); await busyWait(1200); await shot('roadmap');
   await down(0); await at(8); await busyWait(2500); await shot('credits');
-  await page.click('.skip'); await busyWait(1500); await shot('gift');
-  await page.click('.env'); await busyWait(1800); await shot('gift-open');
+  await page.click('.skip'); await busyWait(1500); await shot('credits-end');
 
   // back navigation check
   await page.goto(URL + '?scene=2&step=1'); await busyWait(2500);

@@ -216,10 +216,4 @@ window.SCENES = [
       ['צולם במקום', 'בת ים, רמלה, וכל מה שביניהן'],
     ],
   },
-  {
-    kind: 'gift',
-    tint: '#4A3A22',
-    // TBD: real gift details
-    gift: { name: 'שם המתנה', line: 'משפט קצר על המתנה.', cta: 'לממש', href: '#' },
-  },
 ];
