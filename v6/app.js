@@ -22,8 +22,8 @@
   const grid = $('#cal-grid');
   const ring = $('#cal-ring');
   const hint = $('#hint');
-  // The gesture that moves on, in her words. The ghost finger and the chevron
-  // always go up: a swipe, or two fingers on a trackpad.
+  // The gesture that moves on, in her words. The chevron always points up:
+  // a swipe, or two fingers on a trackpad.
   const touchy = matchMedia('(pointer: coarse)').matches;
   const NEXT = touchy ? 'החליקי למעלה להמשך' : 'גללי להמשך';
   hint.classList.add('teach');
