@@ -314,41 +314,13 @@ window.Widgets = (() => {
     const state = el.querySelector('.blow-state');
     const groups = [...el.querySelectorAll('.cake g')];
 
-    // The birthday song: a short clip that starts when the last flame goes out.
-    // iOS lets a media element play later only if it already played inside a
-    // gesture, so her first tap (or the blow button) primes it muted and pauses.
-    let song = null;
-    let primed = false;
-    let wanted = false;
-    if (cfg.song) {
-      song = document.createElement('audio');
-      song.className = 'song';
-      song.src = cfg.song;
-      song.preload = 'auto';
-      song.setAttribute('playsinline', '');
-      el.append(song);
-    }
-    const prime = () => {
-      if (!song || primed) return;
-      primed = true;
-      song.muted = true;
-      song.play().then(() => {
-        if (!wanted) {
-          song.pause();
-          song.currentTime = 0;
-          song.muted = !!ctx.sound?.muted;
-        }
-      }).catch(() => (primed = false));
-    };
+    // The birthday song starts when the last flame goes out. Sound.start() on
+    // her taps keeps the shared <audio> unlocked for iOS; the clip's length sets
+    // how long the scene lingers before moving on.
     const sing = () => {
-      if (!song) return 8000;
-      wanted = true;
-      song.muted = !!ctx.sound?.muted;
-      song.currentTime = 0;
-      song.play().catch(() => {});
-      ctx.sound?.duck(true);
-      song.addEventListener('ended', () => ctx.sound?.duck(false), { once: true });
-      return (isFinite(song.duration) && song.duration > 1 ? song.duration * 1000 : 22000) + 2000;
+      const el = cfg.song ? ctx.sound?.song(cfg.song) : null;
+      if (!el) return 8000;
+      return (isFinite(el.duration) && el.duration > 1 ? el.duration * 1000 : 22000) + 2000;
     };
 
     const blowOut = (g) => {
@@ -378,7 +350,7 @@ window.Widgets = (() => {
     };
     groups.forEach((g) =>
       g.querySelector('.hit').addEventListener('click', () => {
-        prime();
+        ctx.sound?.start();
         blowOut(g);
       })
     );
@@ -390,7 +362,7 @@ window.Widgets = (() => {
     const btn = el.querySelector('.blow');
     btn.addEventListener('click', async () => {
       if (stream) return;
-      prime();
+      ctx.sound?.start();
       btn.disabled = true;
       try {
         stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false } });
@@ -432,10 +404,7 @@ window.Widgets = (() => {
       cancelAnimationFrame(raf);
       stream?.getTracks().forEach((t) => t.stop());
       actx?.close();
-      if (song && !song.paused) {
-        song.pause();
-        ctx.sound?.duck(false);
-      }
+      ctx.sound?.songStop();
     };
   }
 

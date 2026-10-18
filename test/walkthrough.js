@@ -57,8 +57,7 @@ const URL = 'http://localhost:5177/v4/';
   await down(); await shot('s6-widget');
   for (const c of await page.locator('.cake .hit').all()) { await c.click(); await busyWait(250); }
   await busyWait(900); await shot('s6-done');
-  await at(7); await busyWait(1200); await shot('roadmap');
-  await down(0); await at(8); await busyWait(2500); await shot('credits');
+  await at(7); await busyWait(2500); await shot('credits');
   await page.click('.skip'); await busyWait(1500); await shot('credits-end');
 
   // back navigation check

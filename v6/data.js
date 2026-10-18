@@ -190,20 +190,8 @@ window.SCENES = [
     widget: { type: 'candles', count: 3, hint: 'כבי את הנרות', wish: 'מזל טוב', song: '../photos/yom-huledet.mp3' },
   },
   {
-    kind: 'roadmap',
-    photo: '../photos/roadmap.jpg',
-    tint: '#2E3340',
-    chapter: 'עונה 3',
-    title: 'מפת הדרכים לעתיד',
-    steps: [
-      { label: 'בית משלנו', state: 'בתהליך', tone: '#2E4A3A' },
-      { label: 'חתונה', state: 'בקרוב', tone: '#4A3A2E' },
-      { label: 'ילד/ה', state: 'בקרוב', tone: '#2E3A4A' },
-    ],
-    end: 'עונה 3 · בקרוב',
-  },
-  {
     kind: 'credits',
+    song: '../photos/yom-huledet-2.mp3', // the first chorus rolls under the credits
     // TBD: funny credits content
     lines: [
       ['בימוי ותסריט', 'נתן'],

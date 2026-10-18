@@ -24,6 +24,30 @@ window.Sound = (() => {
       unlockEl = null;
     }
   }
+  // One <audio> for the songs (the candles, the credits). Primed with a muted
+  // play of the silent clip inside the first gesture, so iOS lets it play a
+  // real file later, outside a gesture. Lives in the DOM for the mute button.
+  let songEl = null;
+  let songPrimed = false;
+  function primeSong() {
+    if (songPrimed) return;
+    try {
+      if (!songEl) {
+        songEl = new Audio(SILENT);
+        songEl.className = 'song';
+        songEl.setAttribute('playsinline', '');
+        songEl.preload = 'auto';
+        document.body.append(songEl);
+      }
+      songEl.muted = true;
+      songEl.play().then(() => {
+        songPrimed = true;
+        if (songEl.src.startsWith('data:')) songEl.pause();
+      }).catch(() => {});
+    } catch (e) {
+      songEl = null;
+    }
+  }
   let quiet = false; // the avatar is speaking: bed and shimmer are silent
   let chordTimer = null;
   let shimmerTimer = null;
@@ -171,6 +195,7 @@ window.Sound = (() => {
     start() {
       if (!ensure()) return;
       unlock();
+      primeSong();
       const go = () => {
         if (started || ctx.state !== 'running') return;
         started = true;
@@ -183,7 +208,38 @@ window.Sound = (() => {
       muted = !muted;
       try { localStorage.setItem('linor-mute', muted ? '1' : '0'); } catch (e) {}
       if (ctx) master.gain.setTargetAtTime(muted ? 0 : 1, ctx.currentTime, 0.15);
+      if (songEl) songEl.muted = muted;
       return muted;
+    },
+    // A song file under the moment: the bed ducks while it plays. Returns the element.
+    song(src) {
+      if (!songEl) primeSong();
+      if (!songEl) return null;
+      songEl.src = src;
+      songEl.muted = muted;
+      songEl.volume = 1;
+      songEl.currentTime = 0;
+      songEl.onended = () => api.duck(false);
+      songEl.play().catch(() => {});
+      api.duck(true);
+      return songEl;
+    },
+    // Leaving the moment: the song fades in 0.4s (iOS ignores volume; it just stops), the bed returns
+    songStop() {
+      const el = songEl;
+      if (!el || el.paused || el.src.startsWith('data:')) return;
+      api.duck(false);
+      const t0 = performance.now();
+      const fade = (now) => {
+        const p = Math.min(1, (now - t0) / 400);
+        el.volume = 1 - p;
+        if (p < 1) requestAnimationFrame(fade);
+        else {
+          el.pause();
+          el.volume = 1;
+        }
+      };
+      requestAnimationFrame(fade);
     },
     // one day passes under the ring
     tick() {
