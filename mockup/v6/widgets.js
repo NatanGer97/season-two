@@ -152,6 +152,7 @@ window.Widgets = (() => {
     el.innerHTML = `
       <div class="board"><span class="team">${a.who}</span><span class="score"><b>0</b><em>:</em><b>0</b></span><span class="team">${b.who}</span></div>
       <p class="label w-hint" style="text-align:center;margin-top:14px">${cfg.hint}</p>
+      <div class="final" hidden><span class="label">תוצאה סופית</span><b>${cfg.stamp}</b></div>
       <div class="sides">
         ${[a, b]
           .map(
@@ -161,8 +162,7 @@ window.Widgets = (() => {
           )
           .join('')}
       </div>
-      <button class="btn judge" type="button" hidden data-nogesture>${cfg.judge}</button>
-      <div class="final" hidden><span class="label">תוצאה סופית</span><b>${cfg.stamp}</b></div>`;
+      <button class="btn judge" type="button" hidden data-nogesture>${cfg.judge}</button>`;
     const digits = el.closest('.scene')?.querySelectorAll('.board .score b') || [];
     const judge = el.querySelector('.judge');
     const shown = [0, 0];
@@ -202,6 +202,7 @@ window.Widgets = (() => {
       if (over) return;
       over = true;
       judge.hidden = true;
+      el.classList.add('over');
       cfg.bonus.forEach((t, k) => setTimeout(() => add(1, t, true, 5), 400 + k * 1100));
       setTimeout(() => {
         const fin = el.querySelector('.final');

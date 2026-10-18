@@ -385,6 +385,7 @@
     const s = S[idx];
     const panel = $('.panel', el);
     const before = panel.getBoundingClientRect().top;
+    panel.scrollTop = 0;
     el.dataset.step = n;
     setStepUI(el, n);
     panel.classList.toggle('glass', n === 2);
@@ -511,6 +512,19 @@
     };
   }
 
+  // Smooth scrollTo is ignored on an overflow:hidden box, so the drawer's tail is driven by hand
+  function slideScroll(box, to, ms = 700) {
+    const from = box.scrollTop;
+    if (reduce) return (box.scrollTop = to);
+    const t0 = performance.now();
+    const frame = (now) => {
+      const p = Math.min(1, (now - t0) / ms);
+      box.scrollTop = from + (to - from) * (1 - Math.pow(1 - p, 3));
+      if (p < 1) requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  }
+
   function mountWidget(el, s) {
     const w = $('.widget', el);
     if (w.childElementCount) return;
@@ -518,6 +532,10 @@
       done(after = 4600) {
         clearTimeout(autoNext);
         showHint(NEXT);
+        // On a short screen the finished widget may run past the drawer: bring its tail up
+        const panel = $('.panel', el);
+        const spill = panel.scrollHeight - panel.clientHeight;
+        if (spill > 0) slideScroll(panel, spill);
         autoNext = setTimeout(() => next(), after);
       },
       stamp: stampIn,
